@@ -1,0 +1,221 @@
+<resources>
+    <string name="app_name">Easy Connect</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="new_connection">New Connection</string>
+    <string name="publish_title">Publish Message</string>
+    <string name="subscribe_title">Subcribe a Topic</string>
+    <string name="drawer_setting">App Setting</string>
+    <string name="MenuTwoTitle">Others</string>
+    <string name="Share_present_topic">Share Present Topic</string>
+    <string name="about_me">About</string>
+    <string name="draw_main_title">Easy Connect</string>
+    <string name="draw_sub_title">Easy Publish,Easy Subscribe</string>
+    <string name="connection_str1">Client:</string>
+    <string name="connection_str2">created</string>
+    <string name="menu_settings">Settings</string>
+    <string name="server">Server</string>
+    <string name="port">Port</string>
+    <string name="connect">Connect</string>
+
+    <string name="newConnection">New Connection</string>
+    <string name="newConnectionShort">+</string>
+
+    <string name="title_activity_new_connection">New Connection</string>
+    <string name="clientID">Client ID</string>
+    <string name="connectedto">Connected to </string>
+
+    <string name="Disconnect">Disconnect</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="publish">Publish</string>
+    <string name="title_activity_subscribe">Subscribe</string>
+    <string name="disconnected">Disconnected from</string>
+    <string name="topic">Topic</string>
+    <string name="history">History</string>
+    <string name="title_activity_history">History</string>
+    <string name="subscribed">Subscribed to </string>
+    <string name="token">org.eclipse.paho.android.service.sample.ClientConnections</string>
+    <string name="no_status">Unknown connection status to</string>
+    <string name="connecting">Connecting to</string>
+    <string name="disconnecting">Disconnecting from</string>
+    <string name="connectionError">An error occurred connecting to</string>
+
+    <string name="title_activity_publish">Publish</string>
+    <string name="message">Message</string>
+    <string name="qos0">L</string>
+    <string name="qos1">M</string>
+    <string name="qos2">H</string>
+    <string name="empty"></string>
+    <string name="qos">QOS</string>
+    <string name="retained">Retained</string>
+    <string name="cleanSession">Clean Session</string>
+    <string name="advanced">Advanced Options</string>
+    <string name="advancedShort">Advanced</string>
+    <string name="title_activity_advanced">Advanced</string>
+    <string name="uname">User Name</string>
+    <string name="pass">Password</string>
+    <string name="timeout">Time Out</string>
+    <string name="keepalive">Keep Alive \nTimeout</string>
+
+    <string name="title_activity_last_will">Last Will Message</string>
+    <string name="setLastWill">Set Last Will Message</string>
+    <string name="willMessage">Set Last Will Message</string>
+    <string name="willMessageShort">Last Will</string>
+    <string name="notifyTitle">MQTT Message Received</string>
+    <string name="notifyTitle_connectionLost">MQTT Client Has Lost Connection</string>
+
+    <string name="save">Save</string>
+    <string name="title_activity_connection_details">Connection Details</string>
+    <string name="startLogging">Enable Logging</string>
+    <string name="endLogging">Disable Logging</string>
+    <string name="missingOptions">ClientID, server address or Port number is missing. Please correct or press back arrow cancel.</string>
+
+    <string name='dateFormat'>dd/MM/yy \'at\' HH:mm:ss</string>
+    <string name="unkown_error">Unknown Error</string>
+    <string name="delete">Delete Connection</string>
+    <string name="disconnectClient">Disconnect Client?</string>
+    <string name="deleteDialog">The selected client is currently connected or connecting, deleting this connection will cause it to be disconnected.</string>
+    <string name="continueBtn">Continue</string>
+    <string name="cancelBtn">Cancel</string>
+
+    <!-- Strings that need formatting  -->
+    <string name="messageRecieved">Received message %1$s &lt;br/&gt; &lt;small&gt;Topic: %2$s &lt;/small&gt; </string>
+    <string name="timestamp">&lt;br/&gt; &lt;small&gt; %1$s &lt;/small&gt;</string>
+    <string name="notification">%1$s has received %2$s on topic %3$s</string>
+    <string name="toast_pub_success">Published message: %1$s to topic: %2$s success!</string>
+    <string name="toast_sub_success">Subscribed to %1$s</string>
+    <string name="toast_disconnected">Disconnected</string>
+    <string name="toast_pub_failed">Failed to publish message: %1$s to topic: %2$s</string>
+    <string name="toast_sub_failed">Failed to subscribe to %1$s</string>
+    <string name="connection_lost">%1$s has lost connection to %2$s</string>
+    <string name="failure_disconnect">Disconnect failed.&lt;br/&gt; &lt;small&gt;Reason: %s&lt;/small&gt; </string>
+    <string name="failure_connect">Client failed to connect.&lt;br/&gt; &lt;small&gt;Reason: %s&lt;/small&gt;</string>
+    <string name="client_connected">Client connected successfully</string>
+
+    <!-- Hints -->
+    <string name="serverURIHint">mqtt.waynehfut.com</string>
+    <string name="portHint">1550</string>
+    <string name="contentDescriptionCleanSession">Clean Session</string>
+    <string name="topicHint">hello</string>
+    <string name="messageHint">Hello World</string>
+    <string name="unameHint">user</string>
+    <string name="passwordHint">password</string>
+    <string name="timeoutHint">60</string>
+    <string name="keepaliveHint">200</string>
+    <string name="select">select</string>
+    <string name="history_dis_msg">publish the message at time of</string>
+    <string name="remeber">Remeber me</string>
+    <string name="index">index</string>
+    <string name="title_activity_setting">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">Wayne Hao</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+
+    <string name="new_message_notification_title_template">New message: %1$s</string>
+
+    <!-- TODO: remove this placeholder text -->
+    <string name="new_message_notification_placeholder_text_template">You said %1$s and lorem ipsum
+        dolor sit amet, consectetur adipiscing elit. Etiam non enim magna. Morbi dictum, velit vel
+        semper venenatis, magna odio volutpat velit, at ullamcorper nulla lacus sed turpis.
+        Pellentesque vitae metus elit, nec tincidunt tellus. Integer sed nisl sem, ullamcorper
+        ornare lacus. Duis ac mauris sed massa congue volutpat. Donec sed erat sit amet turpis
+        viverra rhoncus sit amet nec magna. Donec lacinia ligula at libero volutpat volutpat nec nec
+        tortor.
+    </string>
+
+    <string name="action_share">Share</string>
+    <string name="action_reply">Reply</string>
+    <string name="title_activity_about_me">About</string>
+    <string name="large_text">
+        "\n\nEasy Connect \n\n"
+
+        "A MQTT protocol communicate coftware based on Apache Paho.\n"
+        "Without Register,You Can Communicate with other guys as you want  \n"
+        "Transfer data package with Json,Low data flow consumption\n\n"
+        "project:mqtt.waynehfut.com \n"
+        "git@oschina:https://git.oschina.net/waynehfut/EasyConnect.git \n\n\n"
+
+
+        "Author : Wayne Hao \n\n"
+
+        "Postgraduate in School of Management(2016-).\n Student in School of Software(2012-2016).\n At Hefei University Of Technology.\n"
+        "Now studing in Hefei University of Technology.\n"
+        "Working as Intern for Zoom Video Communications.\n\n"
+        "Mail:waynehfut@gmail.com \n\n"
+        "Twitter:https://twitter.com/waynehfut \n\n"
+        "Facebook:https://www.facebook.com/wayne.hfut \n\n"
+        "Weibo:http://weibo.com/waynehfut \n\n"
+        "Instagram:https://www.instagram.com/waynehfut/ \n\n"
+        "From 7:00A.M to 22:00P.M.\n\n"
+
+
+    </string>
+    <string name="mail_subject">[EasyConnect]Ask about EasyConnect</string>
+    <string name="mail_contect">place your question here</string>
+    <string name="mail_address">waynehfut@gmail.com</string>
+    <string name="share_topic_string">Share Topic To</string>
+    <string name="ask_toast">asking local email client……</string>
+    <string name="press_bck">Click one more time to exit</string>
+    <string name="con_success">Already Connected to</string>
+    <string name="conn_fail">Fail Connect to</string>
+    <string name="to_string">Client ID is</string>
+
+</resources>

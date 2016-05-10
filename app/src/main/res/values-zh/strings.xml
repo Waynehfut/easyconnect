@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">易联-MQTT即时通信</string>
+    <string name="action_settings">设置</string>
+    <string name="navigation_drawer_close">关闭导航抽屉</string>
+    <string name="navigation_drawer_open">开启导航抽屉</string>
+    <string name="new_connection">新链接</string>
+    <string name="publish_title">发布消息</string>
+    <string name="subscribe_title">订阅话题</string>
+    <string name="drawer_setting">软件设置</string>
+    <string name="MenuTwoTitle">其他</string>
+    <string name="Share_present_topic">分享当前话题</string>
+    <string name="about_me">关于</string>
+    <string name="draw_main_title">易联</string>
+    <string name="draw_sub_title">易于发布，简单收取</string>
+    <string name="connection_str1">客户端</string>
+    <string name="connection_str2">已经建立</string>
+    <string name="dateFormat">dd/MM/yy  HH:mm:ss</string>
+    <string name="timestamp"><![CDATA[<br/> <small> %1$s </small>]]></string>
+    <string name="Disconnect">断开</string>
+    <string name="advanced">高级选项</string>
+    <string name="advancedShort">高级</string>
+    <string name="cancelBtn">取消</string>
+    <string name="cleanSession">清理会话</string>
+    <string name="clientID">客户端ID</string>
+    <string name="client_connected">客户端链接成功</string>
+    <string name="connect">链接</string>
+    <string name="connectedto">链接到</string>
+    <string name="connecting">正在链接到</string>
+    <string name="connectionError">一个错误发生在链接到</string>
+    <string name="connection_lost">%1$s 已经丢失了到 %2$s 的链接</string>
+    <string name="contentDescriptionCleanSession">清理会话</string>
+    <string name="continueBtn">继续</string>
+    <string name="delete">删除链接</string>
+    <string name="deleteDialog">选择的客户端目前已经链接或正在链接中，删除将造成链接丢失</string>
+    <string name="disconnectClient">断开链接？</string>
+    <string name="disconnected">已断开链接从</string>
+    <string name="disconnecting">正断开链接从</string>
+    <string name="endLogging">关闭日志</string>
+    <string name="failure_connect"><![CDATA[客户端链接失败.<br/> <small>原因: %s</small>]]></string>
+    <string name="failure_disconnect"><![CDATA[断开链接失败.<br/> <small>原因: %s</small>]]></string>
+    <string name="keepalive">会话保持超时</string>
+    <string name="keepaliveHint">200</string>
+    <string name="menu_settings">设置</string>
+    <string name="message">信息</string>
+    <string name="messageHint">你好世界</string>
+    <string name="messageRecieved"><![CDATA[收到一个消息 %1$s <br/> <small>话题是: %2$s </small>]]></string>
+    <string name="missingOptions">ClientID, 服务器地址或端口号丢失. 请链接或按返回键取消.</string>
+    <string name="newConnection">新链接</string>
+    <string name="newConnectionShort">+</string>
+    <string name="no_status">链接状态未知对于</string>
+    <string name="notification">%1$s 收到了 %2$s 在话题 %3$s</string>
+    <string name="notifyTitle">MQTT 消息已经收到了</string>
+    <string name="notifyTitle_connectionLost">MQTT 客户端丢失了链接</string>
+    <string name="pass">密码</string>
+    <string name="passwordHint">密码</string>
+    <string name="port">端口</string>
+    <string name="portHint">1883</string>
+    <string name="publish">发布</string>
+    <string name="qos">服务质量等级</string>
+    <string name="qos1">中</string>
+    <string name="qos2">高</string>
+    <string name="retained">保持链接</string>
+    <string name="save">保存</string>
+    <string name="select">选择</string>
+    <string name="server">服务器</string>
+    <string name="serverURIHint">填写样例域名</string>
+    <string name="setLastWill">设置遗嘱信息</string>
+    <string name="startLogging">开启日志</string>
+    <string name="subscribe">订阅</string>
+    <string name="subscribed">订阅到</string>
+    <string name="timeout">超时</string>
+    <string name="timeoutHint">60</string>
+    <string name="title_activity_advanced">高级</string>
+    <string name="title_activity_connection_details">链接详情</string>
+    <string name="title_activity_history">活动历史</string>
+    <string name="title_activity_last_will">遗嘱信息</string>
+    <string name="title_activity_new_connection">新链接</string>
+    <string name="title_activity_publish">发布</string>
+    <string name="title_activity_subscribe">订阅</string>
+    <string name="toast_disconnected">已断开</string>
+    <string name="toast_pub_failed">发布消息失败: %1$s 到话题: %2$s</string>
+    <string name="toast_pub_success">成功发布消息: %1$s 到话题: %2$s</string>
+    <string name="toast_sub_failed">订阅 %1$s 失败</string>
+    <string name="toast_sub_success">已订阅到 %1$s</string>
+    <string name="token">org.eclipse.paho.android.service.sample.ClientConnections</string>
+    <string name="topic">话题</string>
+    <string name="topicHint">你好</string>
+    <string name="uname">用户名</string>
+    <string name="unameHint">用户</string>
+    <string name="unkown_error">未知错误</string>
+    <string name="willMessage">设置遗嘱信息</string>
+    <string name="willMessageShort">遗嘱信息</string>
+    <string name="history">记录</string>
+    <string name="history_dis_msg">发布了这条消息在</string>
+    <string name="remeber">记住我</string>
+    <string name="index">首页</string>
+    <string name="qos0">低</string>
+    <string name="pref_header_general">通用</string>
+    <string name="pref_header_notifications">提醒</string>
+    <string name="pref_ringtone_silent">静音</string>
+    <string name="pref_title_add_friends_to_messages">将朋友加到消息中</string>
+    <string name="pref_title_display_name">聊天显示的名称</string>
+    <string name="pref_title_new_message_notifications">新消息提醒</string>
+    <string name="pref_default_display_name">王浩</string>
+    <string name="pref_description_social_recommendations">允许使用你的聊天记录进行人员推荐</string>
+    <string name="pref_header_data_sync"><![CDATA[数据 & 同步]]></string>
+    <string name="pref_title_ringtone">铃声</string>
+    <string name="pref_title_social_recommendations">允许社交推荐</string>
+    <string name="pref_title_sync_frequency">同步频率</string>
+    <string name="pref_title_system_sync_settings">系统同步设置</string>
+    <string name="pref_title_vibrate">震动</string>
+    <string name="title_activity_setting">设置</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 分钟</item>
+        <item>30 分钟</item>
+        <item>1 小时</item>
+        <item>3 小时</item>
+        <item>6 小时</item>
+        <item>从不</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+    <string-array name="pref_example_list_titles">
+        <item>总是</item>
+        <item>当可以时</item>
+        <item>从不</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+    <string name="action_reply">回复</string>
+    <string name="action_share">分享</string>
+    <string name="large_text">
+        "易联 \n\n"
+
+        "一款基于Paho的MQTT通信软件.\n"
+        "简洁的链接方式,即时通信无需注册  \n"
+        "Json数据，最大程度降低用量\n\n"
+        "项目地址:mqtt.waynehfut.com \n\n"
+        "git@oschina:https://git.oschina.net/waynehfut/EasyConnect.git\n\n"
+
+        "作者:王浩 \n\n"
+
+        "软件学院学生(2012-2016),合肥工业大学.\n"
+        "目前在合肥工业大学学习  \n"
+        "同时做为实习生在软视软件工作.\n\n"
+        "我的博客:www.waynehfut.com \n\n"
+        "Twitter:https://twitter.com/waynehfut \n\n"
+        "Facebook:https://www.facebook.com/wayne.hfut \n\n"
+        "Weibo:http://weibo.com/waynehfut \n\n"
+        "Instagram:https://www.instagram.com/waynehfut/ \n\n"
+        "时间：7:00A.M - 22:00P.M.\n\n"</string>
+    <string name="title_activity_about_me">关于</string>
+    <string name="mail_subject">[EasyConnect]需求关于易联的帮助</string>
+    <string name="mail_contect">在这里填写问题</string>
+    <string name="mail_address">waynehfut@gmail.com</string>
+    <string name="share_topic_string">分享话题到</string>
+    <string name="ask_toast">正在调用本地邮件客户端……</string>
+    <string name="press_bck">再按一次退出</string>
+    <string name="con_success">已经连接到</string>
+    <string name="conn_fail">链接失败到</string>
+    <string name="to_string">客户端ID为：</string>
+</resources>

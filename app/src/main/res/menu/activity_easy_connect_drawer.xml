@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_index"
+            android:title="@string/index"
+            android:icon="@android:drawable/star_big_off"/>
+        <item
+            android:id="@+id/nav_new_connect"
+            android:icon="@android:drawable/stat_notify_more"
+            android:title="@string/new_connection" />
+        <item
+            android:id="@+id/nav_pub_msg"
+            android:icon="@android:drawable/stat_notify_chat"
+            android:title="@string/publish_title" />
+        <item
+            android:id="@+id/nav_sub_msg"
+            android:icon="@android:drawable/stat_notify_sync"
+            android:title="@string/subscribe_title" />
+        <item
+            android:id="@+id/nav_app_setting"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/drawer_setting" />
+    </group>
+
+    <item android:title="@string/MenuTwoTitle">
+        <menu>
+            <group android:checkableBehavior="none">
+                <item
+                    android:id="@+id/nav_share"
+                    android:icon="@drawable/ic_menu_share"
+                    android:title="@string/Share_present_topic" />
+                <item
+                    android:id="@+id/about_me"
+                    android:icon="@drawable/ic_info_black_24dp"
+                    android:title="@string/about_me" />
+            </group>
+        </menu>
+    </item>
+
+</menu>
