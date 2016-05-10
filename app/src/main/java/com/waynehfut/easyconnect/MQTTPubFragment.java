@@ -11,8 +11,12 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
-import java.util.UUID;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
  * Created by Wayne on 2016/5/8.
@@ -21,12 +25,13 @@ import java.util.UUID;
  */
 public class MQTTPubFragment extends Fragment {
     private static final String TAG = "MQTTPubFragment";
+    MqttClient mqttClient;
     private EditText mTopicId;
     private EditText mMessage;
     private RadioGroup mQOSRadioGroup;
     private int mQOS = 0;
     private CheckBox mIsHoldConn;
-    private Connection connection=Connection.getConnection();
+    private Connection connection = Connection.getConnection();
 
     public static MQTTPubFragment newInstance() {
         MQTTPubFragment mqttPubFragment = new MQTTPubFragment();
@@ -41,7 +46,7 @@ public class MQTTPubFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_pub, container, false);
+        final View view = inflater.inflate(R.layout.new_pub, container, false);
         mTopicId = (EditText) view.findViewById(R.id.pub_topic);
         mMessage = (EditText) view.findViewById(R.id.pub_context);
         mQOSRadioGroup = (RadioGroup) view.findViewById(R.id.qosRadio);
@@ -69,15 +74,39 @@ public class MQTTPubFragment extends Fragment {
             public void onClick(View view) {
                 try {
                     connection.publishMessage(mTopicId.getText().toString(), mMessage.getText().toString(), mQOS);
-                    Snackbar.make(view, getString(R.string.toast_pub_success,mMessage.getText().toString(),mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
-                            .setAction("Action", null).show();
                 } catch (Exception e) {
-                    Snackbar.make(view, getString(R.string.toast_pub_failed,mMessage.getText().toString(),mTopicId.getText().toString())+connection.getServerId(), Snackbar.LENGTH_SHORT)
+                    Snackbar.make(view, getString(R.string.toast_pub_failed, mMessage.getText().toString(), mTopicId.getText().toString()) + connection.getServerId(), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
             }
         });
+        if (connection.getMqttClient() != null) {
+            mqttClient = connection.getMqttClient();
+            mqttClient.setCallback(new MqttCallback() {
+                @Override
+                public void connectionLost(Throwable throwable) {
 
+                }
+
+                @Override
+                public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+                    Snackbar.make(view, "Published message" + mMessage.getText().toString(), Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
+                }
+            });
+        } else {
+            Snackbar.make(view, "Not connect any server yet!", Snackbar.LENGTH_SHORT)
+                    .setAction("Action", null).show();
+        }
         return view;
+    }
+
+    public void pubSnakBarMessage(String tosat) {
+        Toast.makeText(getContext(), tosat, Toast.LENGTH_SHORT);
     }
 }

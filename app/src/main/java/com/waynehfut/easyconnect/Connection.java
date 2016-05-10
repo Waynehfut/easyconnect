@@ -1,7 +1,6 @@
 package com.waynehfut.easyconnect;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -28,6 +27,8 @@ public class Connection {
             * 基础信息
             * */
     private static Connection connection;
+    MQTTSubFragment mqttSubFragment;
+    MQTTPubFragment mqttPubFragment;
     private UUID mUid;
     private String clientHandle = null;
     private String clientId = null;
@@ -42,7 +43,6 @@ public class Connection {
     private ArrayList<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
     private boolean sslConnection = false;
     private long persistenceId = -1;
-
     private Connection() {
     }
 
@@ -52,6 +52,14 @@ public class Connection {
         }
         return connection;
 
+    }
+
+    public MqttClient getMqttClient() {
+        return mqttClient;
+    }
+
+    public void setMqttClient(MqttClient mqttClient) {
+        this.mqttClient = mqttClient;
     }
 
     public UUID getmUid() {
@@ -270,28 +278,12 @@ public class Connection {
     /*
     * 连接到服务
     * */
-    public void connectServer(String brokerURL, String clientId) throws Exception {
+    public void connectServer(final String brokerURL, final String clientId) throws Exception {
         mqttClient = new MqttClient(brokerURL, clientId, new MemoryPersistence());
         mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setCleanSession(true);
         mqttConnectOptions.setConnectionTimeout(60);
         mqttConnectOptions.setKeepAliveInterval(60);
-        mqttClient.setCallback(new MqttCallback() {
-            @Override
-            public void connectionLost(Throwable throwable) {
-                Log.i(TAG, "Lost connect");
-            }
-
-            @Override
-            public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-                Log.i(TAG, "Get Message");
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-                Log.i(TAG, "Sended");
-            }
-        });
         mqttClient.connect(mqttConnectOptions);
 
     }
@@ -308,9 +300,9 @@ public class Connection {
     }
 
     public void subMessage(String topic) throws Exception {
-        if (mqttClient!=null) {
+        if (mqttClient != null) {
             mqttClient.subscribe(topic);
-        }else {
+        } else {
             throw new MqttException(100);
         }
     }

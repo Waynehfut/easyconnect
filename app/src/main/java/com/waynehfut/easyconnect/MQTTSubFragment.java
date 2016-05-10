@@ -9,7 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.RadioGroup;
+
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
  * Created by Wayne on 2016/5/8.
@@ -17,8 +21,10 @@ import android.widget.RadioGroup;
  * Mail:waynehfut@gmail.com
  */
 public class MQTTSubFragment extends Fragment {
+    MqttClient mqttClient;
     private EditText mTopicId;
-    private Connection connection=Connection.getConnection();
+    private Connection connection = Connection.getConnection();
+
     public static MQTTSubFragment newInstance() {
         MQTTSubFragment mqttSubFragment = new MQTTSubFragment();
         return mqttSubFragment;
@@ -32,7 +38,7 @@ public class MQTTSubFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_sub, container, false);
+        final View view = inflater.inflate(R.layout.new_sub, container, false);
         mTopicId = (EditText) view.findViewById(R.id.sub_topic);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.verifyYesButton);
 
@@ -49,6 +55,30 @@ public class MQTTSubFragment extends Fragment {
                 }
             }
         });
+        if (connection.getMqttClient() != null) {
+            mqttClient = connection.getMqttClient();
+            mqttClient.setCallback(new MqttCallback() {
+                @Override
+                public void connectionLost(Throwable throwable) {
+
+                }
+
+                @Override
+                public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+                    Snackbar.make(view, "New message" + mqttMessage.toString(), Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+
+                }
+            });
+        } else {
+            Snackbar.make(view, "Not connect any server yet!", Snackbar.LENGTH_SHORT)
+                    .setAction("Action", null).show();
+        }
         return view;
     }
+
 }
