@@ -307,7 +307,7 @@ public class Connection {
 
     }
 
-    public void subMessage(String topic, int qos) throws Exception {
+    public void subMessage(String topic) throws Exception {
         if (mqttClient!=null) {
             mqttClient.subscribe(topic);
         }else {

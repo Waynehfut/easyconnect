@@ -60,7 +60,7 @@
     <string name="qos">服务质量等级</string>
     <string name="qos1">中</string>
     <string name="qos2">高</string>
-    <string name="retained">保持链接</string>
+    <string name="retained">新消息提醒</string>
     <string name="save">保存</string>
     <string name="select">选择</string>
     <string name="server">服务器</string>
@@ -169,4 +169,7 @@
     <string name="con_success">已经连接到</string>
     <string name="conn_fail">链接失败到</string>
     <string name="to_string">客户端ID为：</string>
+    <string name="new_message_notification_title_template">新消息：%1$s</string>
+    <string name="new_message_notification_placeholder_text_template">你说了 %1$s</string>
+    <string name="empty">客户端ID</string>
 </resources>
