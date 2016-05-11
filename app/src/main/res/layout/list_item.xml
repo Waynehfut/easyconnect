@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_History_Type"
+        android:layout_alignParentRight="true"
+        android:padding="4dp"
+        android:src="@drawable/ic_charge"
+        android:scaleX="0.5"
+        android:scaleY="0.5"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_History_Title"
+        android:layout_toLeftOf="@id/list_History_Type"
+        android:textStyle="bold"
+        android:layout_marginTop="4dp"
+        android:padding="4dp"
+        tools:text="History Title"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_History_Date"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@id/list_History_Type"
+        android:layout_below="@id/list_History_Title"
+        android:padding="4dp"
+        tools:text="History Date"/>
+</RelativeLayout>

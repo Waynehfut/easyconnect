@@ -1,10 +1,12 @@
 package com.waynehfut.easyconnect;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +49,10 @@ public class MQTTSubFragment extends Fragment {
             public void onClick(View view) {
                 try {
                     connection.subMessage(mTopicId.getText().toString());
-                    Snackbar.make(view, getString(R.string.toast_sub_success,mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
+                    Snackbar.make(view, getString(R.string.toast_sub_success, mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 } catch (Exception e) {
-                    Snackbar.make(view, getString(R.string.toast_sub_failed,mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
+                    Snackbar.make(view, getString(R.string.toast_sub_failed, mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
             }
@@ -65,7 +67,7 @@ public class MQTTSubFragment extends Fragment {
 
                 @Override
                 public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                    Snackbar.make(view, getString(R.string.messageRecieved,mqttMessage.toString(),topic)+ mqttMessage.toString(), Snackbar.LENGTH_SHORT)
+                    Snackbar.make(view, getString(R.string.messageRecieved, mqttMessage.toString(), topic) + mqttMessage.toString(), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
 
@@ -75,8 +77,19 @@ public class MQTTSubFragment extends Fragment {
                 }
             });
         } else {
-            Snackbar.make(view, getString(R.string.not_connect_yet), Snackbar.LENGTH_SHORT)
-                    .setAction("Action", null).show();
+            new AlertDialog.Builder(getContext())
+                    .setTitle(getString(R.string.share_alter_dialog))
+                    .setMessage(getString(R.string.not_connect_yet))
+                    .setPositiveButton(getString(R.string.yes_btn), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getActivity().setTitle(R.string.new_connection);
+                            getFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, MQTTConnectFragment.newInstance()).commit();
+
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.no_btn), null)
+                    .show();
         }
         return view;
     }

@@ -5,10 +5,10 @@
         <item
             android:id="@+id/nav_index"
             android:title="@string/index"
-            android:icon="@android:drawable/star_big_off"/>
+            android:icon="@drawable/home"/>
         <item
             android:id="@+id/nav_new_connect"
-            android:icon="@android:drawable/stat_notify_more"
+            android:icon="@drawable/ic_charge"
             android:title="@string/new_connection" />
         <item
             android:id="@+id/nav_pub_msg"
@@ -20,7 +20,7 @@
             android:title="@string/subscribe_title" />
         <item
             android:id="@+id/nav_app_setting"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/settings"
             android:title="@string/drawer_setting" />
     </group>
 

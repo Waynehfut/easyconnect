@@ -35,6 +35,7 @@ public class MQTTConnectFragment extends Fragment {
 
     public MQTTConnectFragment() {
 
+
     }
 
     public static MQTTConnectFragment newInstance() {

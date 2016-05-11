@@ -218,5 +218,10 @@
     <string name="to_string">Client ID is</string>
     <string name="empty">cilentId</string>
     <string name="not_connect_yet">Not connect any server yet,please click "Connect to Server" first.</string>
+    <string name="share_info_context">Share from Easy Connect -a mqtt-based sofware</string>
+    <string name="share_alter_dialog">Oppps</string>
+    <string name="no_topic_to_share">Now you didn\'t have any topic to share,Why not try make one your own TOPIC?</string>
+    <string name="yes_btn">Yes</string>
+    <string name="no_btn">No</string>
 
 </resources>

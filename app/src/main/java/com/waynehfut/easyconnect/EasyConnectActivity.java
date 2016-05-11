@@ -1,5 +1,6 @@
 package com.waynehfut.easyconnect;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -8,12 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 public class EasyConnectActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -120,7 +121,37 @@ public class EasyConnectActivity extends AppCompatActivity
             Intent intent = new Intent(this, SettingActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-            shareTopic();
+            if (Connection.getConnection().getmPubTopic() != null) {
+                shareTopic();
+            } else if (Connection.getConnection().getConnectionStatus() == Connection.ConnectionStatus.DISCONNECTED) {
+                new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.share_alter_dialog))
+                        .setMessage(getString(R.string.not_connect_yet))
+                        .setPositiveButton(getString(R.string.yes_btn), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setTitle(R.string.new_connection);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, netConnectFragment).commit();
+
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no_btn), null)
+                        .show();
+            } else {
+                new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.share_alter_dialog))
+                        .setMessage(getString(R.string.no_topic_to_share))
+                        .setPositiveButton(getString(R.string.yes_btn), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setTitle(R.string.new_connection);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, pubMessageFragment).commit();
+
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no_btn), null)
+                        .show();
+            }
         } else if (id == R.id.about_me) {
             Intent intent = new Intent(this, AboutMeActivity.class);
             startActivity(intent);
@@ -135,8 +166,8 @@ public class EasyConnectActivity extends AppCompatActivity
     private boolean shareTopic() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, "");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "");
+        intent.putExtra(Intent.EXTRA_TEXT, Connection.getConnection().getmPubTopic() + getString(R.string.share_info_context));
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_info_context));
         intent = Intent.createChooser(intent, getString(R.string.share_topic_string));
         startActivity(intent);
         return true;

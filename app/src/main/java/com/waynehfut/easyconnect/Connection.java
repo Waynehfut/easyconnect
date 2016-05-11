@@ -32,6 +32,8 @@ public class Connection {
     private String clientId = null;
     private String serverId = null;
     private String port = null;
+    private String mPubTopic = null;
+    private String mSubTopic = null;
     private boolean isRemember = false;
     private ConnectionStatus connectionStatus = ConnectionStatus.DISCONNECTED;
     private ConnectionStatus status = ConnectionStatus.NONE;
@@ -43,7 +45,6 @@ public class Connection {
     private ArrayList<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
     private boolean sslConnection = false;
     private long persistenceId = -1;
-
     private Connection() {
     }
 
@@ -53,6 +54,22 @@ public class Connection {
         }
         return connection;
 
+    }
+
+    public String getmPubTopic() {
+        return mPubTopic;
+    }
+
+    public void setmPubTopic(String mPubTopic) {
+        this.mPubTopic = mPubTopic;
+    }
+
+    public String getmSubTopic() {
+        return mSubTopic;
+    }
+
+    public void setmSubTopic(String mSubTopic) {
+        this.mSubTopic = mSubTopic;
     }
 
     public ConnectionStatus getConnectionStatus() {
@@ -317,6 +334,7 @@ public class Connection {
         newMessage.setQos(qos);
         if (mqttClient != null) {
             mqttClient.publish(topic, newMessage);
+            mPubTopic = topic;
         } else {
             throw new MqttPersistenceException(200);
         }
@@ -326,6 +344,7 @@ public class Connection {
     public void subMessage(String topic) throws Exception {
         if (mqttClient != null) {
             mqttClient.subscribe(topic);
+            mSubTopic = topic;
         } else {
             throw new MqttException(100);
         }

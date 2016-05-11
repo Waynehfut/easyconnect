@@ -1,10 +1,12 @@
 package com.waynehfut.easyconnect;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +47,7 @@ public class MQTTPubFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.new_pub, container, false);
         mTopicId = (EditText) view.findViewById(R.id.pub_topic);
         mMessage = (EditText) view.findViewById(R.id.pub_context);
@@ -96,13 +98,25 @@ public class MQTTPubFragment extends Fragment {
 
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-                    Snackbar.make(view, "Published message" + mMessage.getText().toString(), Snackbar.LENGTH_SHORT)
+                    connection.setmPubTopic(mTopicId.getText().toString());
+                    Snackbar.make(view, getString(R.string.toast_pub_success,mMessage.getText().toString(),mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
             });
         } else {
-            Snackbar.make(view, getString(R.string.not_connect_yet), Snackbar.LENGTH_SHORT)
-                    .setAction("Action", null).show();
+            new AlertDialog.Builder(getContext())
+                    .setTitle(getString(R.string.share_alter_dialog))
+                    .setMessage(getString(R.string.not_connect_yet))
+                    .setPositiveButton(getString(R.string.yes_btn), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getActivity().setTitle(R.string.new_connection);
+                            getFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, MQTTConnectFragment.newInstance()).commit();
+
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.no_btn), null)
+                    .show();
         }
         return view;
     }

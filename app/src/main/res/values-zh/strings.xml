@@ -172,5 +172,10 @@
     <string name="new_message_notification_title_template">新消息：%1$s</string>
     <string name="new_message_notification_placeholder_text_template">你说了 %1$s</string>
     <string name="empty">客户端ID</string>
-    <string name="not_connect_yet">尚未链接到任何服务器，请先点击"新链接"</string>
+    <string name="not_connect_yet">尚未链接到任何服务器，请先建立链接</string>
+    <string name="share_info_context">分享自易联-一款基于MQTT的软件</string>
+    <string name="share_alter_dialog">糟了！</string>
+    <string name="no_topic_to_share">现在你并没有话题可以分享，快去创建你的话题吧！</string>
+    <string name="no_btn">不了</string>
+    <string name="yes_btn">好的,带我去吧</string>
 </resources>
