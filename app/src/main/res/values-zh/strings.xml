@@ -44,7 +44,7 @@
     <string name="menu_settings">设置</string>
     <string name="message">信息</string>
     <string name="messageHint">你好世界</string>
-    <string name="messageRecieved"><![CDATA[收到一个消息 %1$s <br/> <small>话题是: %2$s </small>]]></string>
+    <string name="messageRecieved">收到一个消息 %1$s 话题是: %2$s </string>
     <string name="missingOptions">ClientID, 服务器地址或端口号丢失. 请链接或按返回键取消.</string>
     <string name="newConnection">新链接</string>
     <string name="newConnectionShort">+</string>
@@ -152,7 +152,7 @@
 
         "软件学院学生(2012-2016),合肥工业大学.\n"
         "目前在合肥工业大学学习  \n"
-        "同时做为实习生在软视软件工作.\n\n"
+        "同时做为实习生在 Zoom Video Communications 工作.\n\n"
         "我的博客:www.waynehfut.com \n\n"
         "Twitter:https://twitter.com/waynehfut \n\n"
         "Facebook:https://www.facebook.com/wayne.hfut \n\n"

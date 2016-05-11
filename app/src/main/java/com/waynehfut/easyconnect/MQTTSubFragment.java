@@ -64,8 +64,8 @@ public class MQTTSubFragment extends Fragment {
                 }
 
                 @Override
-                public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-                    Snackbar.make(view, "New message" + mqttMessage.toString(), Snackbar.LENGTH_SHORT)
+                public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+                    Snackbar.make(view, getString(R.string.messageRecieved,mqttMessage.toString(),topic)+ mqttMessage.toString(), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
 

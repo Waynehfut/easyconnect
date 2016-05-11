@@ -89,8 +89,9 @@ public class MQTTPubFragment extends Fragment {
                 }
 
                 @Override
-                public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-
+                public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+                    Snackbar.make(view, getString(R.string.messageRecieved, mqttMessage.toString(), topic) + mqttMessage.toString(), Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
                 }
 
                 @Override
