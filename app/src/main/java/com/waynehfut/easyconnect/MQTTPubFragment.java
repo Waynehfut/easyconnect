@@ -101,7 +101,7 @@ public class MQTTPubFragment extends Fragment {
                 }
             });
         } else {
-            Snackbar.make(view, "Not connect any server yet!", Snackbar.LENGTH_SHORT)
+            Snackbar.make(view, getString(R.string.not_connect_yet), Snackbar.LENGTH_SHORT)
                     .setAction("Action", null).show();
         }
         return view;

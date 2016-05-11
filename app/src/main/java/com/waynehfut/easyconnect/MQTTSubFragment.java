@@ -47,10 +47,10 @@ public class MQTTSubFragment extends Fragment {
             public void onClick(View view) {
                 try {
                     connection.subMessage(mTopicId.getText().toString());
-                    Snackbar.make(view, "Sub Success", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(view, getString(R.string.toast_sub_success,mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 } catch (Exception e) {
-                    Snackbar.make(view, "Sub Fail", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(view, getString(R.string.toast_sub_failed,mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
             }
@@ -75,7 +75,7 @@ public class MQTTSubFragment extends Fragment {
                 }
             });
         } else {
-            Snackbar.make(view, "Not connect any server yet!", Snackbar.LENGTH_SHORT)
+            Snackbar.make(view, getString(R.string.not_connect_yet), Snackbar.LENGTH_SHORT)
                     .setAction("Action", null).show();
         }
         return view;

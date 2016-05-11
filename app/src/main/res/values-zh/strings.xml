@@ -17,14 +17,14 @@
     <string name="connection_str2">已经建立</string>
     <string name="dateFormat">dd/MM/yy  HH:mm:ss</string>
     <string name="timestamp"><![CDATA[<br/> <small> %1$s </small>]]></string>
-    <string name="Disconnect">断开</string>
+    <string name="Disconnect">未链接</string>
     <string name="advanced">高级选项</string>
     <string name="advancedShort">高级</string>
     <string name="cancelBtn">取消</string>
     <string name="cleanSession">清理会话</string>
     <string name="clientID">客户端ID</string>
     <string name="client_connected">客户端链接成功</string>
-    <string name="connect">链接</string>
+    <string name="connect">已链接</string>
     <string name="connectedto">链接到</string>
     <string name="connecting">正在链接到</string>
     <string name="connectionError">一个错误发生在链接到</string>
@@ -48,7 +48,7 @@
     <string name="missingOptions">ClientID, 服务器地址或端口号丢失. 请链接或按返回键取消.</string>
     <string name="newConnection">新链接</string>
     <string name="newConnectionShort">+</string>
-    <string name="no_status">链接状态未知对于</string>
+    <string name="no_status">链接状态未知</string>
     <string name="notification">%1$s 收到了 %2$s 在话题 %3$s</string>
     <string name="notifyTitle">MQTT 消息已经收到了</string>
     <string name="notifyTitle_connectionLost">MQTT 客户端丢失了链接</string>
@@ -172,4 +172,5 @@
     <string name="new_message_notification_title_template">新消息：%1$s</string>
     <string name="new_message_notification_placeholder_text_template">你说了 %1$s</string>
     <string name="empty">客户端ID</string>
+    <string name="not_connect_yet">尚未链接到任何服务器，请先点击"新链接"</string>
 </resources>

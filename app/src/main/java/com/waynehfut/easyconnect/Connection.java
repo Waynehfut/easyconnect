@@ -2,8 +2,6 @@ package com.waynehfut.easyconnect;
 
 import android.content.Context;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -34,6 +32,8 @@ public class Connection {
     private String clientId = null;
     private String serverId = null;
     private String port = null;
+    private boolean isRemember = false;
+    private ConnectionStatus connectionStatus = ConnectionStatus.DISCONNECTED;
     private ConnectionStatus status = ConnectionStatus.NONE;
     private ArrayList<String> history = null;
     private MqttClient mqttClient = null;
@@ -43,6 +43,7 @@ public class Connection {
     private ArrayList<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
     private boolean sslConnection = false;
     private long persistenceId = -1;
+
     private Connection() {
     }
 
@@ -52,6 +53,22 @@ public class Connection {
         }
         return connection;
 
+    }
+
+    public ConnectionStatus getConnectionStatus() {
+        return connectionStatus;
+    }
+
+    public void setConnectionStatus(ConnectionStatus connectionStatus) {
+        this.connectionStatus = connectionStatus;
+    }
+
+    public boolean isRemember() {
+        return isRemember;
+    }
+
+    public void setRemember(boolean remember) {
+        isRemember = remember;
     }
 
     public MqttClient getMqttClient() {
@@ -84,6 +101,13 @@ public class Connection {
 
     public void setMqttConnectOptions(MqttConnectOptions mqttConnectOptions) {
         this.mqttConnectOptions = mqttConnectOptions;
+    }
+
+    public void clear() {
+        this.serverId = null;
+        this.port = null;
+        this.clientId = null;
+        this.isRemember = false;
     }
 
     public ArrayList<String> getHistory() {
