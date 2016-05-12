@@ -206,6 +206,9 @@ public class Connection {
                 break;
             case ERROR:
                 sb.append(context.getString(R.string.connectionError));
+                break;
+            case NEWCONNECT:
+                sb.append("New Connection");
         }
         sb.append(" ");
         sb.append(serverId);
@@ -377,6 +380,10 @@ public class Connection {
         /*
         * 状态未知
         * */
-        NONE
+        NONE,
+        /*
+        * 新链接
+        * */
+        NEWCONNECT
     }
 }
