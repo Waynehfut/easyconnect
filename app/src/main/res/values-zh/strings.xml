@@ -34,11 +34,11 @@
     <string name="delete">删除链接</string>
     <string name="deleteDialog">选择的客户端目前已经链接或正在链接中，删除将造成链接丢失</string>
     <string name="disconnectClient">断开链接？</string>
-    <string name="disconnected">已断开链接从</string>
-    <string name="disconnecting">正断开链接从</string>
+    <string name="disconnected">已断开链接</string>
+    <string name="disconnecting">正断开链接</string>
     <string name="endLogging">关闭日志</string>
     <string name="failure_connect"><![CDATA[客户端链接失败.<br/> <small>原因: %s</small>]]></string>
-    <string name="failure_disconnect"><![CDATA[断开链接失败.<br/> <small>原因: %s</small>]]></string>
+    <string name="failure_disconnect">断开链接失败,原因:</string>
     <string name="keepalive">会话保持超时</string>
     <string name="keepaliveHint">200</string>
     <string name="menu_settings">设置</string>
@@ -178,4 +178,5 @@
     <string name="no_topic_to_share">现在你并没有话题可以分享，快去创建你的话题吧！</string>
     <string name="no_btn">不了</string>
     <string name="yes_btn">好的,带我去吧</string>
+    <string name="scran_ecode">扫描二维码</string>
 </resources>

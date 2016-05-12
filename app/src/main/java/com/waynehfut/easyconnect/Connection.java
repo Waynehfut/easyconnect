@@ -45,6 +45,7 @@ public class Connection {
     private ArrayList<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
     private boolean sslConnection = false;
     private long persistenceId = -1;
+
     private Connection() {
     }
 
@@ -329,6 +330,12 @@ public class Connection {
         mqttConnectOptions.setConnectionTimeout(60);
         mqttConnectOptions.setKeepAliveInterval(60);
         mqttClient.connect(mqttConnectOptions);
+
+    }
+
+    public void disConnectServer() throws MqttException {
+        if (mqttClient.isConnected())
+            mqttClient.disconnect();
 
     }
 

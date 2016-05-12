@@ -3,7 +3,6 @@ package com.waynehfut.easyconnect;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -12,34 +11,57 @@ import java.util.UUID;
  * Mail:waynehfut@gmail.com
  */
 public class EasyHistoryLab {
-    private static EasyHistoryLab sEayHistoryLab;
+    private static EasyHistoryLab sEasyHistoryLab;
     private ArrayList<EasyConnectHistory> mEasyConnectHistories;
     private Context mContext;
 
     private EasyHistoryLab(Context appContext) {
         mContext = appContext;
         mEasyConnectHistories = new ArrayList<EasyConnectHistory>();
+        /*
+        * test code
+        * */
+//        for (int i = 0; i < 100; i++) {
+//            EasyConnectHistory easyConnectHistory = new EasyConnectHistory();
+//            easyConnectHistory.setHistoryTitle("111");
+//            easyConnectHistory.setHistorySubTitle("222");
+//            switch (i % 3) {
+//                case 0:
+//                    easyConnectHistory.setHisType(Connection.ConnectionStatus.DISCONNECTED);
+//                    break;
+//                case 1:
+//                    easyConnectHistory.setHisType(Connection.ConnectionStatus.CONNECTED);
+//                    break;
+//                case 2:
+//                    easyConnectHistory.setHisType(Connection.ConnectionStatus.NEWCONNECT);
+//                    break;
+//                default:
+//                    easyConnectHistory.setHisType(Connection.ConnectionStatus.CONNECTED);
+//            }
+//            mEasyConnectHistories.add(easyConnectHistory);
+//        }
     }
 
-    public static EasyHistoryLab get(Context context) {
-        if (sEayHistoryLab == null) {
-            sEayHistoryLab = new EasyHistoryLab(context.getApplicationContext());
+    public static EasyHistoryLab getEasyHistoryLab(Context context) {
+        if (sEasyHistoryLab == null) {
+            sEasyHistoryLab = new EasyHistoryLab(context);
         }
-        return sEayHistoryLab;
+        return sEasyHistoryLab;
     }
 
     public void addHistory(EasyConnectHistory easyConnectHistory) {
         mEasyConnectHistories.add(easyConnectHistory);
     }
 
-    public List<EasyConnectHistory> getEasyConnectHistories() {
-        List<EasyConnectHistory> easyConnectHistories = new ArrayList<>();
-        return easyConnectHistories;
-    }
-    public EasyConnectHistory getEasyHistory(UUID historyUID){
+    public ArrayList<EasyConnectHistory> getEasyConnectHistories() {
 
-        for (EasyConnectHistory easyConnectHistory:mEasyConnectHistories){
-            if (easyConnectHistory.getHistoryUID().equals(historyUID)){
+        return mEasyConnectHistories;
+    }
+
+    public EasyConnectHistory getEasyHistory(UUID historyUID) {
+
+        for (EasyConnectHistory easyConnectHistory : mEasyConnectHistories) {
+            if (easyConnectHistory.getHistoryUID().equals(historyUID)) {
                 return easyConnectHistory;
             }
         }

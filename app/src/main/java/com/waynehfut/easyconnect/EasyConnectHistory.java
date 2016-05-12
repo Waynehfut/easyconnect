@@ -27,12 +27,11 @@ public class EasyConnectHistory {
     private Connection.ConnectionStatus hisType;
     private UUID historyUID;
 
-    public UUID getHistoryUID() {
-        return historyUID;
+    public EasyConnectHistory() {
+        historyUID = UUID.randomUUID();
     }
-
-    public void setHistoryUID(UUID historyUID) {
-        this.historyUID = historyUID;
+    public UUID getHistoryUID(){
+        return historyUID;
     }
 
     public Connection.ConnectionStatus getHisType() {

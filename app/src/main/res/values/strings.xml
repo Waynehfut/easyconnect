@@ -32,7 +32,7 @@
     <string name="subscribe">Subscribe</string>
     <string name="publish">Publish</string>
     <string name="title_activity_subscribe">Subscribe</string>
-    <string name="disconnected">Disconnected from</string>
+    <string name="disconnected">Disconnected</string>
     <string name="topic">Topic</string>
     <string name="history">History</string>
     <string name="title_activity_history">History</string>
@@ -40,7 +40,7 @@
     <string name="token">org.eclipse.paho.android.service.sample.ClientConnections</string>
     <string name="no_status">Unknown connection status</string>
     <string name="connecting">Connecting to</string>
-    <string name="disconnecting">Disconnecting from</string>
+    <string name="disconnecting">Disconnecting</string>
     <string name="connectionError">An error occurred connecting to</string>
 
     <string name="title_activity_publish">Publish</string>
@@ -90,7 +90,7 @@
     <string name="toast_pub_failed">Failed to publish message: %1$s to topic: %2$s</string>
     <string name="toast_sub_failed">Failed to subscribe to %1$s</string>
     <string name="connection_lost">%1$s has lost connection to %2$s</string>
-    <string name="failure_disconnect">Disconnect failed.&lt;br/&gt; &lt;small&gt;Reason: %s&lt;/small&gt; </string>
+    <string name="failure_disconnect">Disconnect failed;Reason: </string>
     <string name="failure_connect">Client failed to connect.&lt;br/&gt; &lt;small&gt;Reason: %s&lt;/small&gt;</string>
     <string name="client_connected">Client connected successfully</string>
 
@@ -223,5 +223,6 @@
     <string name="no_topic_to_share">Now you didn\'t have any topic to share,Why not try make one your own TOPIC?</string>
     <string name="yes_btn">Yes</string>
     <string name="no_btn">No</string>
+    <string name="scran_ecode">scran ecode</string>
 
 </resources>

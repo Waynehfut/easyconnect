@@ -3,11 +3,14 @@ package com.waynehfut.easyconnect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,26 +23,35 @@ import java.util.List;
  */
 public class EasyConnectFragment extends Fragment {
     private static final String TAG = "EasyConnectFragment";
-    Connection connection = Connection.getConnection();
-    private EditText mServerId;
-    private EditText mPort;
-    private EditText mClientId;
+    private static EasyConnectFragment sEasyConnectFragment;
     private RecyclerView mHistoryRecycleView;
     private HistoryAdapter historyAdapter;
+    private EasyHistoryLab easyHistoryLab;
 
     public EasyConnectFragment() {
 
     }
 
     public static EasyConnectFragment newInstance() {
-        EasyConnectFragment easyConnectFragment = new EasyConnectFragment();
-        return easyConnectFragment;
+//        if (sEasyConnectFragment == null) {
+            sEasyConnectFragment = new EasyConnectFragment();
+//        }
+        return sEasyConnectFragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.app_bar_easy_connect, container, false);
+        easyHistoryLab = EasyHistoryLab.getEasyHistoryLab(getContext());
+        mHistoryRecycleView = (RecyclerView) view.findViewById(R.id.index_list_iew);
+        mHistoryRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        updateUI();
         return view;
     }
 
@@ -47,6 +59,20 @@ public class EasyConnectFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+    }
+
+
+
+    public void updateUI() {
+        EasyHistoryLab easyHistoryLab = EasyHistoryLab.getEasyHistoryLab(getActivity());
+        List<EasyConnectHistory> easyConnectHistories = easyHistoryLab.getEasyConnectHistories();
+        if (historyAdapter == null) {
+            historyAdapter = new HistoryAdapter(easyConnectHistories);
+            mHistoryRecycleView.setAdapter(historyAdapter);
+        } else {
+            historyAdapter.setmEasyConnectHistories(easyConnectHistories);
+            historyAdapter.notifyDataSetChanged();
+        }
     }
 
     /*
@@ -86,7 +112,6 @@ public class EasyConnectFragment extends Fragment {
         public int getItemCount() {
             return mEasyConnectHistories.size();
         }
-
     }
 
     private class HistoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -125,10 +150,12 @@ public class EasyConnectFragment extends Fragment {
         * 绑定数据信息
         * */
         public void bindHistory(EasyConnectHistory easyConnectHistory) {
-            mEasyConnectHistory = easyConnectHistory;
-            mHistoryTitle.setText(mEasyConnectHistory.getHistoryTitle());
-            mHistorySubtitle.setText(mEasyConnectHistory.getHistorySubTitle());
-            mHistoryStatus.setImageResource(findImageByType(mEasyConnectHistory.getHisType()));
+            if (easyConnectHistory != null) {
+                mEasyConnectHistory = easyConnectHistory;
+                mHistoryTitle.setText(mEasyConnectHistory.getHistoryTitle());
+                mHistorySubtitle.setText(mEasyConnectHistory.getHistorySubTitle());
+                mHistoryStatus.setImageResource(findImageByType(mEasyConnectHistory.getHisType()));
+            }
         }
 
         /*
