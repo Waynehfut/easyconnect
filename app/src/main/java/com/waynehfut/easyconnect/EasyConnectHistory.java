@@ -1,5 +1,7 @@
 package com.waynehfut.easyconnect;
 
+import java.util.UUID;
+
 /**
  * Created by Wayne on 2016/5/10.
  * Site:www.waynehfut.com
@@ -23,6 +25,15 @@ public class EasyConnectHistory {
     private String historyTitle;
     private String historySubTitle;
     private Connection.ConnectionStatus hisType;
+    private UUID historyUID;
+
+    public UUID getHistoryUID() {
+        return historyUID;
+    }
+
+    public void setHistoryUID(UUID historyUID) {
+        this.historyUID = historyUID;
+    }
 
     public Connection.ConnectionStatus getHisType() {
         return hisType;

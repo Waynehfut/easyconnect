@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Wayne on 2016/5/12.
@@ -30,8 +31,18 @@ public class EasyHistoryLab {
     public void addHistory(EasyConnectHistory easyConnectHistory) {
         mEasyConnectHistories.add(easyConnectHistory);
     }
-    public List<EasyConnectHistory> getEasyConnectHistories(){
+
+    public List<EasyConnectHistory> getEasyConnectHistories() {
         List<EasyConnectHistory> easyConnectHistories = new ArrayList<>();
         return easyConnectHistories;
+    }
+    public EasyConnectHistory getEasyHistory(UUID historyUID){
+
+        for (EasyConnectHistory easyConnectHistory:mEasyConnectHistories){
+            if (easyConnectHistory.getHistoryUID().equals(historyUID)){
+                return easyConnectHistory;
+            }
+        }
+        return null;
     }
 }
