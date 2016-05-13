@@ -26,6 +26,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  */
 public class MQTTConnectFragment extends Fragment {
     private static final String TAG = "MQTTConnectFragment";
+    private static MQTTConnectFragment smqttConnectFragment;
     Connection connection = Connection.getConnection();
     private EditText mServerId;
     private EditText mPort;
@@ -38,14 +39,14 @@ public class MQTTConnectFragment extends Fragment {
     private EasyConnectHistory easyConnectHistory = new EasyConnectHistory();
     private EasyHistoryLab easyHistoryLab;
     private EasyConnectFragment easyConnectFragment;
-private static MQTTConnectFragment smqttConnectFragment;
+
     public MQTTConnectFragment() {
 
 
     }
 
     public static MQTTConnectFragment newInstance() {
-        if (smqttConnectFragment==null)
+        if (smqttConnectFragment == null)
             smqttConnectFragment = new MQTTConnectFragment();
         return smqttConnectFragment;
     }
@@ -65,9 +66,15 @@ private static MQTTConnectFragment smqttConnectFragment;
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onDestroyView() {
+
+        super.onDestroyView();
+    }
+
     /*
-        * 在创建View时设置监听，并获取填写数据
-        * */
+            * 在创建View时设置监听，并获取填写数据
+            * */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -95,15 +102,19 @@ private static MQTTConnectFragment smqttConnectFragment;
                     }
                 }
             });
-            if(connection.getConnectionStatus()== Connection.ConnectionStatus.CONNECTED){
+            if (connection.getConnectionStatus() == Connection.ConnectionStatus.CONNECTED) {
                 fab.hide();
                 disFab.show();
                 connection.setServerId(mServerId.getText().toString());
                 connection.setPort(mPort.getText().toString());
                 connection.setClientId(mClientId.getText().toString());
-
+                mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+                mConnStatus.setText(getString(R.string.connect));
             }
-
+            if (connection.getConnectionStatus() == Connection.ConnectionStatus.DISCONNECTED) {
+                mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                mConnStatus.setText(getString(R.string.disconnected));
+            }
 
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,7 +133,7 @@ private static MQTTConnectFragment smqttConnectFragment;
                         disFab.show();
                         updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), "Client ID is " + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, easyConnectHistory);
                     } catch (Exception e) {
-                        updateHistorydateAndUI(getString(R.string.failure_disconnect), e.toString(), Connection.ConnectionStatus.DISCONNECTED, new EasyConnectHistory());
+                        updateHistorydateAndUI(getString(R.string.failure_connect), e.toString(), Connection.ConnectionStatus.DISCONNECTED, new EasyConnectHistory());
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
 
                         Snackbar.make(view, getString(R.string.conn_fail) + mServerId.getText().toString(), Snackbar.LENGTH_SHORT)
@@ -130,6 +141,7 @@ private static MQTTConnectFragment smqttConnectFragment;
 
                         connection.clear();
                         mConnStatus.setText(getString(R.string.Disconnect));
+                        connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
                         mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
                     }
                 }
@@ -149,6 +161,8 @@ private static MQTTConnectFragment smqttConnectFragment;
                                         mConnStatus.setText(getString(R.string.disconnected));
                                         mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
                                         updateHistorydateAndUI(getString(R.string.disconnected), " ", Connection.ConnectionStatus.DISCONNECTED, new EasyConnectHistory());
+                                        connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
+
                                     } catch (MqttException e) {
                                         String errorInfo = e.toString();
                                         mConnStatus.setText(getString(R.string.failure_disconnect) + errorInfo);
@@ -195,8 +209,7 @@ private static MQTTConnectFragment smqttConnectFragment;
             }
 
             return view;
-        }
-        else {
+        } else {
             /*
             * 实现二维码页面
             * */

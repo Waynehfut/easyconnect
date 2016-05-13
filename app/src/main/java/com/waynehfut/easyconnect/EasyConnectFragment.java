@@ -30,9 +30,8 @@ public class EasyConnectFragment extends Fragment {
     }
 
     public static EasyConnectFragment newInstance() {
-        if (sEasyConnectFragment == null) {
+        if (sEasyConnectFragment == null)
             sEasyConnectFragment = new EasyConnectFragment();
-        }
         return sEasyConnectFragment;
     }
 
@@ -50,6 +49,12 @@ public class EasyConnectFragment extends Fragment {
         mHistoryRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         updateUI();
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+
+        super.onDestroyView();
     }
 
     @Override

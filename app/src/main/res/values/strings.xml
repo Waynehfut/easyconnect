@@ -91,7 +91,7 @@
     <string name="toast_sub_failed">Failed to subscribe to %1$s</string>
     <string name="connection_lost">%1$s has lost connection to %2$s</string>
     <string name="failure_disconnect">Disconnect failed;Reason: </string>
-    <string name="failure_connect">Client failed to connect.&lt;br/&gt; &lt;small&gt;Reason: %s&lt;/small&gt;</string>
+    <string name="failure_connect">Client failed to connect.Reason: </string>
     <string name="client_connected">Client connected successfully</string>
 
     <!-- Hints -->

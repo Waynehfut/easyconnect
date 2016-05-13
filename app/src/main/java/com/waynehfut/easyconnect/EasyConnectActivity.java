@@ -2,10 +2,13 @@ package com.waynehfut.easyconnect;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,6 +27,7 @@ public class EasyConnectActivity extends AppCompatActivity
     Fragment easyConnectFragment;
     Fragment pubMessageFragment;
     Fragment subTopicFragment;
+    Fragment currentFragement;
     private long exitTime = 0;
 //    Fragment softwareSettingFragment;
 
@@ -33,6 +37,7 @@ public class EasyConnectActivity extends AppCompatActivity
         easyConnectFragment = EasyConnectFragment.newInstance();
         pubMessageFragment = MQTTPubFragment.newInstance();
         subTopicFragment = MQTTSubFragment.newInstance();
+        currentFragement = easyConnectFragment;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_easy_connect);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -46,6 +51,11 @@ public class EasyConnectActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -75,6 +85,7 @@ public class EasyConnectActivity extends AppCompatActivity
         }
         return super.onKeyDown(keyCode, event);
     }
+
     /*
     * 顶部按钮
     * */
@@ -83,6 +94,11 @@ public class EasyConnectActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.easy_connect, menu);
         return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override
@@ -108,6 +124,7 @@ public class EasyConnectActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.nav_index) {
             setTitle(R.string.app_name);
+//            switchContent(currentFragement, easyConnectFragment);
             getSupportFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, easyConnectFragment).commit();
         } else if (id == R.id.nav_new_connect) {
             setTitle(R.string.new_connection);
@@ -162,6 +179,18 @@ public class EasyConnectActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void switchContent(Fragment from, Fragment to) {
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().setCustomAnimations(
+                android.R.anim.fade_in, android.R.anim.fade_out);
+        if (!to.isAdded()) {    // 先判断是否被add过
+            transaction.hide(from).add(R.id.app_bar_easy_connect, to).commit(); // 隐藏当前的fragment，add下一个到Activity中
+        } else {
+            transaction.hide(from).show(to).commit(); // 隐藏当前的fragment，显示下一个
+        }
+
     }
 
     private boolean shareTopic() {
