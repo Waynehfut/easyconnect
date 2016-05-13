@@ -75,7 +75,7 @@ public class EasyConnectFragment extends Fragment {
 
     public void updateUI() {
         EasyHistoryLab easyHistoryLab = EasyHistoryLab.getEasyHistoryLab(getActivity());
-        List<EasyConnectHistory> easyConnectHistories = easyHistoryLab.getEasyConnectHistories();
+        List<EasyHistory> easyConnectHistories = easyHistoryLab.getEasyConnectHistories();
         if (historyAdapter == null) {
             historyAdapter = new HistoryAdapter(easyConnectHistories);
             mHistoryRecycleView.setAdapter(historyAdapter);
@@ -89,19 +89,19 @@ public class EasyConnectFragment extends Fragment {
     * 列表容器的数据单个条目信息
     * */
     private class HistoryAdapter extends RecyclerView.Adapter<HistoryHolder> {
-        private List<EasyConnectHistory> mEasyConnectHistories;
+        private List<EasyHistory> mEasyConnectHistories;
 
-        public HistoryAdapter(List<EasyConnectHistory> easyConnectHistories) {
+        public HistoryAdapter(List<EasyHistory> easyConnectHistories) {
             mEasyConnectHistories = easyConnectHistories;
         }
 
-        public void setmEasyConnectHistories(List<EasyConnectHistory> mEasyConnectHistories) {
+        public void setmEasyConnectHistories(List<EasyHistory> mEasyConnectHistories) {
             this.mEasyConnectHistories = mEasyConnectHistories;
         }
 
         @Override
         public void onBindViewHolder(HistoryHolder holder, int position) {
-            EasyConnectHistory easyConnectHistory = mEasyConnectHistories.get(position);
+            EasyHistory easyConnectHistory = mEasyConnectHistories.get(position);
             /*
             * 此处绑定数据源
             * */
@@ -128,7 +128,7 @@ public class EasyConnectFragment extends Fragment {
         private TextView mHistoryTitle;
         private TextView mHistorySubtitle;
         private ImageView mHistoryStatus;
-        private EasyConnectHistory mEasyConnectHistory;
+        private EasyHistory mEasyConnectHistory;
 
         public HistoryHolder(View historyView) {
             super(historyView);
@@ -159,7 +159,7 @@ public class EasyConnectFragment extends Fragment {
         /*
         * 绑定数据信息
         * */
-        public void bindHistory(EasyConnectHistory easyConnectHistory) {
+        public void bindHistory(EasyHistory easyConnectHistory) {
             if (easyConnectHistory != null) {
                 mEasyConnectHistory = easyConnectHistory;
                 mHistoryTitle.setText(mEasyConnectHistory.getHistoryTitle());

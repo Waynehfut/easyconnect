@@ -38,7 +38,7 @@ public class MQTTConnectFragment extends Fragment {
     private TextView mConnStatus;
     private MqttClient mqttClient;
     private Connection.ConnectionStatus connectStatus = Connection.ConnectionStatus.DISCONNECTED;
-    private EasyConnectHistory easyConnectHistory = new EasyConnectHistory();
+    private EasyHistory easyConnectHistory = new EasyHistory();
     private EasyHistoryLab easyHistoryLab;
     private EasyConnectFragment easyConnectFragment;
     private HistoryAddCallback historyAddCallback;
@@ -133,7 +133,7 @@ public class MQTTConnectFragment extends Fragment {
                     try {
                         brokerURL = "tcp://" + mServerId.getText().toString() + ":" + mPort.getText().toString();
                         connection.connectServer(brokerURL, mClientId.getText().toString());
-                        updateHistorydateAndUI(getString(R.string.new_connection), " ", Connection.ConnectionStatus.NEWCONNECT, new EasyConnectHistory());
+                        updateHistorydateAndUI(getString(R.string.new_connection), " ", Connection.ConnectionStatus.NEWCONNECT, new EasyHistory());
                         Snackbar.make(view, getString(R.string.con_success) + mServerId.getText().toString() + getString(R.string.to_string) + mClientId.getText().toString(), Snackbar.LENGTH_SHORT)
                                 .setAction("Action", null).show();
 
@@ -142,9 +142,9 @@ public class MQTTConnectFragment extends Fragment {
                         mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
                         fab.hide();
                         disFab.show();
-                        updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), getString(R.string.to_string) + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyConnectHistory());
+                        updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), getString(R.string.to_string) + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyHistory());
                     } catch (Exception e) {
-                        updateHistorydateAndUI(getString(R.string.failure_connect), e.toString(), Connection.ConnectionStatus.DISCONNECTED, new EasyConnectHistory());
+                        updateHistorydateAndUI(getString(R.string.failure_connect), e.toString(), Connection.ConnectionStatus.DISCONNECTED, new EasyHistory());
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
 
                         Snackbar.make(view, getString(R.string.conn_fail) + e.toString(), Snackbar.LENGTH_SHORT)
@@ -171,7 +171,7 @@ public class MQTTConnectFragment extends Fragment {
                                         connection.disConnectServer();
                                         mConnStatus.setText(getString(R.string.disconnected));
                                         mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-                                        updateHistorydateAndUI(getString(R.string.disconnected), " ", Connection.ConnectionStatus.DISCONNECTED, new EasyConnectHistory());
+                                        updateHistorydateAndUI(getString(R.string.disconnected), " ", Connection.ConnectionStatus.DISCONNECTED, new EasyHistory());
                                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
                                     } catch (MqttException e) {
                                         String errorInfo = e.toString();
@@ -228,7 +228,7 @@ public class MQTTConnectFragment extends Fragment {
         }
     }
 
-    private void updateHistorydateAndUI(String historyTitle, String historySubTitle, Connection.ConnectionStatus newconnect, EasyConnectHistory easyConnectHistory) {
+    private void updateHistorydateAndUI(String historyTitle, String historySubTitle, Connection.ConnectionStatus newconnect, EasyHistory easyConnectHistory) {
         easyConnectHistory.setHistoryTitle(historyTitle);
         easyConnectHistory.setHistorySubTitle(historySubTitle);
         easyConnectHistory.setHisType(newconnect);

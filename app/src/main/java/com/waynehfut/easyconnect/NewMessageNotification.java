@@ -51,10 +51,10 @@ public class NewMessageNotification {
         final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.ic_connect);
 
 
-        final String ticker = exampleString;
+        final String ticker = res.getString(R.string.share_topic_string);
         final String title = res.getString(
-                R.string.share_info_context);
-        final String text = res.getString(R.string.new_message_notification_title_template);
+                R.string.new_message_notification_title_template);
+        final String text =exampleString;
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 

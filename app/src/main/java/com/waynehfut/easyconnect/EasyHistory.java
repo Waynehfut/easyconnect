@@ -16,7 +16,7 @@ import java.util.UUID;
  * # -------------------
  * # 将保存链接状态，发布状态，订阅状态，断开状态，发布信息历史，订阅信息历史
  */
-public class EasyConnectHistory {
+public class EasyHistory {
     /*
     * @param historyTitle for xml layout's attr,History Title;
     * @param hisSubtitle for xml layout's attr,History Subtitle;
@@ -27,7 +27,7 @@ public class EasyConnectHistory {
     private Connection.ConnectionStatus hisType;
     private UUID historyUID;
 
-    public EasyConnectHistory() {
+    public EasyHistory() {
         historyUID = UUID.randomUUID();
     }
     public UUID getHistoryUID(){

@@ -12,12 +12,12 @@ import java.util.UUID;
  */
 public class EasyHistoryLab {
     private static EasyHistoryLab sEasyHistoryLab;
-    private ArrayList<EasyConnectHistory> mEasyConnectHistories;
+    private ArrayList<EasyHistory> mEasyConnectHistories;
     private Context mContext;
 
     private EasyHistoryLab(Context appContext) {
         mContext = appContext;
-        mEasyConnectHistories = new ArrayList<EasyConnectHistory>();
+        mEasyConnectHistories = new ArrayList<EasyHistory>();
     }
 
     public static EasyHistoryLab getEasyHistoryLab(Context context) {
@@ -27,18 +27,18 @@ public class EasyHistoryLab {
         return sEasyHistoryLab;
     }
 
-    public void addHistory(EasyConnectHistory easyConnectHistory) {
+    public void addHistory(EasyHistory easyConnectHistory) {
         mEasyConnectHistories.add(easyConnectHistory);
     }
 
-    public ArrayList<EasyConnectHistory> getEasyConnectHistories() {
+    public ArrayList<EasyHistory> getEasyConnectHistories() {
 
         return mEasyConnectHistories;
     }
 
-    public EasyConnectHistory getEasyHistory(UUID historyUID) {
+    public EasyHistory getEasyHistory(UUID historyUID) {
 
-        for (EasyConnectHistory easyConnectHistory : mEasyConnectHistories) {
+        for (EasyHistory easyConnectHistory : mEasyConnectHistories) {
             if (easyConnectHistory.getHistoryUID().equals(historyUID)) {
                 return easyConnectHistory;
             }
