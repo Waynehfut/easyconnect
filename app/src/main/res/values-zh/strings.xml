@@ -168,7 +168,7 @@
     <string name="con_success">已经连接到</string>
     <string name="conn_fail">链接失败到</string>
     <string name="to_string">客户端ID为：</string>
-    <string name="new_message_notification_title_template">新消息：%1$s</string>
+    <string name="new_message_notification_title_template">新消息</string>
     <string name="new_message_notification_placeholder_text_template">你说了 %1$s</string>
     <string name="empty">客户端ID</string>
     <string name="not_connect_yet">尚未链接到任何服务器，请先建立链接</string>

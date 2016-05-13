@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import com.meizu.flyme.reflect.NotificationProxy;
 
 /**
  * Helper class for showing and canceling new message
@@ -52,27 +53,27 @@ public class NewMessageNotification {
 
         final String ticker = exampleString;
         final String title = res.getString(
-                R.string.share_topic_string);
-        final String text =
-                ticker;
+                R.string.share_info_context);
+        final String text = res.getString(R.string.new_message_notification_title_template);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.
-                .setDefaults(Notification.DEFAULT_ALL)
+                .setDefaults(Notification.FLAG_SHOW_LIGHTS|Notification.DEFAULT_SOUND)
+
 
                 // Set required fields, including the small icon, the
                 // notification title, and text.
                 .setSmallIcon(R.drawable.ic_connect)
-                .setContentTitle(title)
-                .setContentText(text)
+                .setContentTitle(text)
+                .setContentText(ticker)
 
                 // All fields below this line are optional.
 
                 // Use a default priority (recognized on devices running Android
                 // 4.1 or later)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
 
                 // Provide a large icon, shown with the notification in the
                 // notification drawer on devices running Android 3.0 or later.
@@ -99,8 +100,11 @@ public class NewMessageNotification {
                 .setContentIntent(
                         PendingIntent.getActivity(
                                 context,
+                                /*
+                                * 此处实现了点击通知的事件
+                                * */
                                 0,
-                                new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")),
+                                new Intent(Intent.ACTION_VIEW, Uri.parse("http://mqtt.waynehfut.com")),
                                 PendingIntent.FLAG_UPDATE_CURRENT))
 
                 // Show expanded text content on devices running Android 4.1 or
@@ -108,7 +112,7 @@ public class NewMessageNotification {
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(text)
                         .setBigContentTitle(title)
-                        .setSummaryText("Dummy summary text"))
+                        .setSummaryText("mqtt.waynehfut.com"))
 
                 // Example additional actions for this notification. These will
                 // only show on devices running Android 4.1 or later, so you
@@ -123,13 +127,12 @@ public class NewMessageNotification {
                                 0,
                                 Intent.createChooser(new Intent(Intent.ACTION_SEND)
                                         .setType("text/plain")
-                                        .putExtra(Intent.EXTRA_TEXT, exampleString), title),
+                                        .putExtra(Intent.EXTRA_TEXT, ticker+"  "+res.getString(R.string.share_info_context)), title),
                                 PendingIntent.FLAG_UPDATE_CURRENT))
 
 
                 // Automatically dismiss the notification when it is touched.
                 .setAutoCancel(true);
-
         notify(context, builder.build());
     }
 

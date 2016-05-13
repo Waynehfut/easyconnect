@@ -123,6 +123,10 @@ public class EasyConnectActivity extends AppCompatActivity
         super.onSaveInstanceState(outState, outPersistentState);
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

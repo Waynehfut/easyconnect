@@ -143,7 +143,7 @@ public class MQTTConnectFragment extends Fragment {
                         fab.hide();
                         disFab.show();
                         updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), getString(R.string.to_string) + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyConnectHistory());
-                    } catch (MqttException e) {
+                    } catch (Exception e) {
                         updateHistorydateAndUI(getString(R.string.failure_connect), e.toString(), Connection.ConnectionStatus.DISCONNECTED, new EasyConnectHistory());
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
 

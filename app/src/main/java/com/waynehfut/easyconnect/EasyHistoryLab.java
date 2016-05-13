@@ -18,28 +18,6 @@ public class EasyHistoryLab {
     private EasyHistoryLab(Context appContext) {
         mContext = appContext;
         mEasyConnectHistories = new ArrayList<EasyConnectHistory>();
-        /*
-        * test code
-        * */
-//        for (int i = 0; i < 100; i++) {
-//            EasyConnectHistory easyConnectHistory = new EasyConnectHistory();
-//            easyConnectHistory.setHistoryTitle("111");
-//            easyConnectHistory.setHistorySubTitle("222");
-//            switch (i % 3) {
-//                case 0:
-//                    easyConnectHistory.setHisType(Connection.ConnectionStatus.DISCONNECTED);
-//                    break;
-//                case 1:
-//                    easyConnectHistory.setHisType(Connection.ConnectionStatus.CONNECTED);
-//                    break;
-//                case 2:
-//                    easyConnectHistory.setHisType(Connection.ConnectionStatus.NEWCONNECT);
-//                    break;
-//                default:
-//                    easyConnectHistory.setHisType(Connection.ConnectionStatus.CONNECTED);
-//            }
-//            mEasyConnectHistories.add(easyConnectHistory);
-//        }
     }
 
     public static EasyHistoryLab getEasyHistoryLab(Context context) {

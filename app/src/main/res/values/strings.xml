@@ -167,7 +167,7 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
 
-    <string name="new_message_notification_title_template">New message: %1$s</string>
+    <string name="new_message_notification_title_template">New message</string>
 
     <!-- TODO: remove this placeholder text -->
     <string name="new_message_notification_placeholder_text_template">You said %1$s and lorem ipsum
