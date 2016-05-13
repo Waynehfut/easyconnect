@@ -27,6 +27,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
  */
 public class MQTTPubFragment extends Fragment {
     private static final String TAG = "MQTTPubFragment";
+    private static MQTTPubFragment smqttPubFragment;
     MqttClient mqttClient;
     private EditText mTopicId;
     private EditText mMessage;
@@ -36,13 +37,19 @@ public class MQTTPubFragment extends Fragment {
     private Connection connection = Connection.getConnection();
 
     public static MQTTPubFragment newInstance() {
-        MQTTPubFragment mqttPubFragment = new MQTTPubFragment();
-        return mqttPubFragment;
+        if (smqttPubFragment == null)
+            smqttPubFragment = new MQTTPubFragment();
+        return smqttPubFragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Nullable
@@ -99,7 +106,7 @@ public class MQTTPubFragment extends Fragment {
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
                     connection.setmPubTopic(mTopicId.getText().toString());
-                    Snackbar.make(view, getString(R.string.toast_pub_success,mMessage.getText().toString(),mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
+                    Snackbar.make(view, getString(R.string.toast_pub_success, mMessage.getText().toString(), mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
             });

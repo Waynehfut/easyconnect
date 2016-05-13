@@ -5,10 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,9 +30,9 @@ public class EasyConnectFragment extends Fragment {
     }
 
     public static EasyConnectFragment newInstance() {
-//        if (sEasyConnectFragment == null) {
+        if (sEasyConnectFragment == null) {
             sEasyConnectFragment = new EasyConnectFragment();
-//        }
+        }
         return sEasyConnectFragment;
     }
 
@@ -57,11 +54,14 @@ public class EasyConnectFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
 
     public void updateUI() {
         EasyHistoryLab easyHistoryLab = EasyHistoryLab.getEasyHistoryLab(getActivity());

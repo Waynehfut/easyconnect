@@ -23,13 +23,20 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
  * Mail:waynehfut@gmail.com
  */
 public class MQTTSubFragment extends Fragment {
+    private static MQTTSubFragment smqttSubFragment;
     MqttClient mqttClient;
     private EditText mTopicId;
     private Connection connection = Connection.getConnection();
 
     public static MQTTSubFragment newInstance() {
-        MQTTSubFragment mqttSubFragment = new MQTTSubFragment();
-        return mqttSubFragment;
+        if (smqttSubFragment == null)
+            smqttSubFragment = new MQTTSubFragment();
+        return smqttSubFragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
