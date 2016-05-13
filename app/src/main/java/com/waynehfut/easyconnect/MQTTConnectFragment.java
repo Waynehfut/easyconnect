@@ -142,7 +142,7 @@ public class MQTTConnectFragment extends Fragment {
                         mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
                         fab.hide();
                         disFab.show();
-                        updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), "Client ID is " + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyConnectHistory());
+                        updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), getString(R.string.to_string) + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyConnectHistory());
                     } catch (MqttException e) {
                         updateHistorydateAndUI(getString(R.string.failure_connect), e.toString(), Connection.ConnectionStatus.DISCONNECTED, new EasyConnectHistory());
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);

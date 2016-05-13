@@ -33,7 +33,7 @@ public class MQTTPubFragment extends Fragment {
     private EditText mMessage;
     private RadioGroup mQOSRadioGroup;
     private int mQOS = 0;
-    private CheckBox mIsHoldConn;
+//    private CheckBox mIsHoldConn;
     private Connection connection = Connection.getConnection();
 
     public static MQTTPubFragment newInstance() {
@@ -76,7 +76,7 @@ public class MQTTPubFragment extends Fragment {
                 }
             }
         });
-        mIsHoldConn = (CheckBox) view.findViewById(R.id.isRetained);
+//        mIsHoldConn = (CheckBox) view.findViewById(R.id.isRetained);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.verifyYesButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
