@@ -117,6 +117,11 @@ public class SettingActivity extends AppCompatPreferenceActivity {
         setupActionBar();
     }
 
+    @Override
+    protected void onResume() {
+        
+        super.onResume();
+    }
 
     @Override
     public void onBackPressed() {
