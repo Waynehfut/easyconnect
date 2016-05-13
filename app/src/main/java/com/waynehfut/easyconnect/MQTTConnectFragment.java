@@ -1,5 +1,6 @@
 package com.waynehfut.easyconnect;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -39,6 +40,8 @@ public class MQTTConnectFragment extends Fragment {
     private EasyConnectHistory easyConnectHistory = new EasyConnectHistory();
     private EasyHistoryLab easyHistoryLab;
     private EasyConnectFragment easyConnectFragment;
+    private HistoryAddCallback historyAddCallback;
+
 
     public MQTTConnectFragment() {
 
@@ -49,6 +52,12 @@ public class MQTTConnectFragment extends Fragment {
         if (smqttConnectFragment == null)
             smqttConnectFragment = new MQTTConnectFragment();
         return smqttConnectFragment;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        historyAddCallback = (HistoryAddCallback) activity;
     }
 
     @Override
@@ -88,6 +97,7 @@ public class MQTTConnectFragment extends Fragment {
             mConnStatus = (TextView) view.findViewById(R.id.connect_status);
             mIsRemember = (CheckBox) view.findViewById(R.id.isRemember);
             easyHistoryLab = EasyHistoryLab.getEasyHistoryLab(getContext());
+
             easyConnectFragment = EasyConnectFragment.newInstance();
             /*
             * 记住我
@@ -131,7 +141,7 @@ public class MQTTConnectFragment extends Fragment {
                         mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
                         fab.hide();
                         disFab.show();
-                        updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), "Client ID is " + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, easyConnectHistory);
+                        updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), "Client ID is " + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyConnectHistory());
                     } catch (Exception e) {
                         updateHistorydateAndUI(getString(R.string.failure_connect), e.toString(), Connection.ConnectionStatus.DISCONNECTED, new EasyConnectHistory());
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
@@ -162,7 +172,6 @@ public class MQTTConnectFragment extends Fragment {
                                         mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
                                         updateHistorydateAndUI(getString(R.string.disconnected), " ", Connection.ConnectionStatus.DISCONNECTED, new EasyConnectHistory());
                                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
-
                                     } catch (MqttException e) {
                                         String errorInfo = e.toString();
                                         mConnStatus.setText(getString(R.string.failure_disconnect) + errorInfo);
@@ -222,6 +231,11 @@ public class MQTTConnectFragment extends Fragment {
         easyConnectHistory.setHistoryTitle(historyTitle);
         easyConnectHistory.setHistorySubTitle(historySubTitle);
         easyConnectHistory.setHisType(newconnect);
+        historyAddCallback.onHistoryAdd();
         easyHistoryLab.addHistory(easyConnectHistory);
+    }
+
+    public interface HistoryAddCallback {
+        void onHistoryAdd();
     }
 }

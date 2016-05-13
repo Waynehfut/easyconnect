@@ -110,25 +110,14 @@ public class MQTTPubFragment extends Fragment {
                             .setAction("Action", null).show();
                 }
             });
-        } else {
-            new AlertDialog.Builder(getContext())
-                    .setTitle(getString(R.string.share_alter_dialog))
-                    .setMessage(getString(R.string.not_connect_yet))
-                    .setPositiveButton(getString(R.string.yes_btn), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            getActivity().setTitle(R.string.new_connection);
-                            getFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, MQTTConnectFragment.newInstance()).commit();
-
-                        }
-                    })
-                    .setNegativeButton(getString(R.string.no_btn), null)
-                    .show();
         }
         return view;
     }
 
     public void pubSnakBarMessage(String tosat) {
         Toast.makeText(getContext(), tosat, Toast.LENGTH_SHORT);
+    }
+    public  interface PubCallBacks{
+        void showPubNewConntec();
     }
 }

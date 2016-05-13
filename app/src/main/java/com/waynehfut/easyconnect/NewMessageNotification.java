@@ -47,14 +47,14 @@ public class NewMessageNotification {
 
         // This image is used as the notification's large icon (thumbnail).
         // TODO: Remove this if your notification has no relevant thumbnail.
-        final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.example_picture);
+        final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.ic_connect);
 
 
         final String ticker = exampleString;
         final String title = res.getString(
-                R.string.new_message_notification_title_template, exampleString);
-        final String text = res.getString(
-                R.string.new_message_notification_placeholder_text_template, exampleString);
+                R.string.share_topic_string);
+        final String text =
+                ticker;
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
@@ -64,7 +64,7 @@ public class NewMessageNotification {
 
                 // Set required fields, including the small icon, the
                 // notification title, and text.
-                .setSmallIcon(R.drawable.ic_stat_new_message)
+                .setSmallIcon(R.drawable.ic_connect)
                 .setContentTitle(title)
                 .setContentText(text)
 
@@ -123,12 +123,9 @@ public class NewMessageNotification {
                                 0,
                                 Intent.createChooser(new Intent(Intent.ACTION_SEND)
                                         .setType("text/plain")
-                                        .putExtra(Intent.EXTRA_TEXT, "Dummy text"), "Dummy title"),
+                                        .putExtra(Intent.EXTRA_TEXT, exampleString), title),
                                 PendingIntent.FLAG_UPDATE_CURRENT))
-                .addAction(
-                        R.drawable.ic_action_stat_reply,
-                        res.getString(R.string.action_reply),
-                        null)
+
 
                 // Automatically dismiss the notification when it is touched.
                 .setAutoCancel(true);

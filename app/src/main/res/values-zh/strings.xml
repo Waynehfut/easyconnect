@@ -49,7 +49,6 @@
     <string name="newConnection">新链接</string>
     <string name="newConnectionShort">+</string>
     <string name="no_status">链接状态未知</string>
-    <string name="notification">%1$s 收到了 %2$s 在话题 %3$s</string>
     <string name="notifyTitle">MQTT 消息已经收到了</string>
     <string name="notifyTitle_connectionLost">MQTT 客户端丢失了链接</string>
     <string name="pass">密码</string>
@@ -163,7 +162,7 @@
     <string name="mail_subject">[EasyConnect]需求关于易联的帮助</string>
     <string name="mail_contect">在这里填写问题</string>
     <string name="mail_address">waynehfut@gmail.com</string>
-    <string name="share_topic_string">分享话题到</string>
+    <string name="share_topic_string">分享到</string>
     <string name="ask_toast">正在调用本地邮件客户端……</string>
     <string name="press_bck">再按一次退出</string>
     <string name="con_success">已经连接到</string>
@@ -179,4 +178,5 @@
     <string name="no_btn">不了</string>
     <string name="yes_btn">好的,带我去吧</string>
     <string name="scran_ecode">扫描二维码</string>
+    <string name="notification">:</string>
 </resources>

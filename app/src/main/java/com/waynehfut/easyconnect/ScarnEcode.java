@@ -6,4 +6,10 @@ package com.waynehfut.easyconnect;
  * Mail:waynehfut@gmail.com
  */
 public class ScarnEcode {
+    public ScarnEcode(){
+
+    }
+    public void doScarn(){
+
+    }
 }

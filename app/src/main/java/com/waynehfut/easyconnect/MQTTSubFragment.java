@@ -76,6 +76,7 @@ public class MQTTSubFragment extends Fragment {
                 public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                     Snackbar.make(view, getString(R.string.messageRecieved, mqttMessage.toString(), topic) + mqttMessage.toString(), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
+                    NewMessageNotification.notify(getContext(),getString(R.string.messageRecieved, mqttMessage.toString(), topic),1);
                 }
 
                 @Override
@@ -83,22 +84,10 @@ public class MQTTSubFragment extends Fragment {
 
                 }
             });
-        } else {
-            new AlertDialog.Builder(getContext())
-                    .setTitle(getString(R.string.share_alter_dialog))
-                    .setMessage(getString(R.string.not_connect_yet))
-                    .setPositiveButton(getString(R.string.yes_btn), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            getActivity().setTitle(R.string.new_connection);
-                            getFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, MQTTConnectFragment.newInstance()).commit();
-
-                        }
-                    })
-                    .setNegativeButton(getString(R.string.no_btn), null)
-                    .show();
         }
         return view;
     }
-
+    public  interface SubCallBacks{
+        void showSubNewConntec();
+    }
 }

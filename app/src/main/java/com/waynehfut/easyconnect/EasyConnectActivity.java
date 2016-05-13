@@ -21,15 +21,22 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class EasyConnectActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,MQTTConnectFragment.HistoryAddCallback {
     private static final String TAG = "EasyConnectActivity";
-    Fragment netConnectFragment;
-    Fragment easyConnectFragment;
-    Fragment pubMessageFragment;
-    Fragment subTopicFragment;
+    MQTTConnectFragment netConnectFragment;
+    EasyConnectFragment easyConnectFragment;
+    MQTTPubFragment pubMessageFragment;
+    MQTTSubFragment subTopicFragment;
     Fragment currentFragement;
+    Connection connection = Connection.getConnection();
     private long exitTime = 0;
 //    Fragment softwareSettingFragment;
+
+
+    @Override
+    public void onHistoryAdd() {
+        easyConnectFragment.updateUI();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +108,7 @@ public class EasyConnectActivity extends AppCompatActivity
         super.onSaveInstanceState(outState, outPersistentState);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -110,6 +118,8 @@ public class EasyConnectActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            ScarnEcode scarnEcode = new ScarnEcode();
+            scarnEcode.doScarn();
             return true;
         }
 
@@ -124,22 +134,67 @@ public class EasyConnectActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.nav_index) {
             setTitle(R.string.app_name);
-//            switchContent(currentFragement, easyConnectFragment);
-            getSupportFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, easyConnectFragment).commit();
+            if (getSupportFragmentManager().findFragmentByTag("Index") == null)
+                getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, easyConnectFragment, "Index").commit();
+            showOnlyOne(easyConnectFragment);
         } else if (id == R.id.nav_new_connect) {
             setTitle(R.string.new_connection);
-            getSupportFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, netConnectFragment).commit();
+            if (getSupportFragmentManager().findFragmentByTag("Connect") == null)
+                getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, netConnectFragment, "Connect").commit();
+            showOnlyOne(netConnectFragment);
         } else if (id == R.id.nav_pub_msg) {
-            setTitle(R.string.publish_title);
-            getSupportFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, pubMessageFragment).commit();
+            if (connection.getConnectionStatus() == Connection.ConnectionStatus.CONNECTED) {
+                setTitle(R.string.publish_title);
+                if (getSupportFragmentManager().findFragmentByTag("Pub") == null)
+                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, pubMessageFragment, "Pub").commit();
+                showOnlyOne(pubMessageFragment);
+            } else {
+                new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.share_alter_dialog))
+                        .setMessage(getString(R.string.not_connect_yet))
+                        .setPositiveButton(getString(R.string.yes_btn), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setTitle(R.string.new_connection);
+                                if (getSupportFragmentManager().findFragmentByTag("Connect") == null)
+                                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, netConnectFragment, "Connect").commit();
+                                showOnlyOne(netConnectFragment);
+
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no_btn), null)
+                        .show();
+            }
+
         } else if (id == R.id.nav_sub_msg) {
-            setTitle(R.string.subscribe_title);
-            getSupportFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, subTopicFragment).commit();
+            if (connection.getConnectionStatus() == Connection.ConnectionStatus.CONNECTED) {
+                setTitle(R.string.subscribe_title);
+                if (getSupportFragmentManager().findFragmentByTag("Sub") == null)
+                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, subTopicFragment, "Sub").commit();
+                showOnlyOne(subTopicFragment);
+            } else {
+
+                new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.share_alter_dialog))
+                        .setMessage(getString(R.string.not_connect_yet))
+                        .setPositiveButton(getString(R.string.yes_btn), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setTitle(R.string.new_connection);
+                                if (getSupportFragmentManager().findFragmentByTag("Connect") == null)
+                                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, netConnectFragment, "Connect").commit();
+                                showOnlyOne(netConnectFragment);
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no_btn), null)
+                        .show();
+
+            }
         } else if (id == R.id.nav_app_setting) {
             Intent intent = new Intent(this, SettingActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-            if (Connection.getConnection().getmPubTopic() != null) {
+            if (connection.getmPubTopic() != null) {
                 shareTopic();
             } else if (Connection.getConnection().getConnectionStatus() == Connection.ConnectionStatus.DISCONNECTED) {
                 new AlertDialog.Builder(this)
@@ -149,21 +204,25 @@ public class EasyConnectActivity extends AppCompatActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 setTitle(R.string.new_connection);
-                                getSupportFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, netConnectFragment).commit();
+                                if (getSupportFragmentManager().findFragmentByTag("Connect") == null)
+                                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, netConnectFragment, "Connect").commit();
+                                showOnlyOne(netConnectFragment);
 
                             }
                         })
                         .setNegativeButton(getString(R.string.no_btn), null)
                         .show();
-            } else {
+            } else if (connection.getConnectionStatus() == Connection.ConnectionStatus.CONNECTED) {
                 new AlertDialog.Builder(this)
                         .setTitle(getString(R.string.share_alter_dialog))
                         .setMessage(getString(R.string.no_topic_to_share))
                         .setPositiveButton(getString(R.string.yes_btn), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                setTitle(R.string.new_connection);
-                                getSupportFragmentManager().beginTransaction().replace(R.id.app_bar_easy_connect, pubMessageFragment).commit();
+                                setTitle(R.string.publish_title);
+                                if (getSupportFragmentManager().findFragmentByTag("Pub") == null)
+                                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, pubMessageFragment, "Pub").commit();
+                                showOnlyOne(pubMessageFragment);
 
                             }
                         })
@@ -191,6 +250,18 @@ public class EasyConnectActivity extends AppCompatActivity
             transaction.hide(from).show(to).commit(); // 隐藏当前的fragment，显示下一个
         }
 
+    }
+
+    public void showOnlyOne(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().hide(netConnectFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(subTopicFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(pubMessageFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(easyConnectFragment).commit();
+        getSupportFragmentManager().beginTransaction().show(fragment).commit();
+    }
+
+    public void showIndex() {
+        showOnlyOne(easyConnectFragment);
     }
 
     private boolean shareTopic() {

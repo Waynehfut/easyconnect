@@ -83,7 +83,6 @@
     <!-- Strings that need formatting  -->
     <string name="messageRecieved">Received message %1$s Topic: %2$s </string>
     <string name="timestamp">&lt;br/&gt; &lt;small&gt; %1$s &lt;/small&gt;</string>
-    <string name="notification">%1$s has received %2$s on topic %3$s</string>
     <string name="toast_pub_success">Published message: %1$s to topic: %2$s success!</string>
     <string name="toast_sub_success">Subscribed to %1$s</string>
     <string name="toast_disconnected">Disconnected</string>
@@ -210,7 +209,7 @@
     <string name="mail_subject">[EasyConnect]Ask about EasyConnect</string>
     <string name="mail_contect">place your question here</string>
     <string name="mail_address">waynehfut@gmail.com</string>
-    <string name="share_topic_string">Share Topic To</string>
+    <string name="share_topic_string">Share To</string>
     <string name="ask_toast">asking local email client……</string>
     <string name="press_bck">Click one more time to exit</string>
     <string name="con_success">Already Connected to</string>
@@ -224,5 +223,6 @@
     <string name="yes_btn">Yes</string>
     <string name="no_btn">No</string>
     <string name="scran_ecode">scran ecode</string>
+    <string name="notification">:</string>
 
 </resources>

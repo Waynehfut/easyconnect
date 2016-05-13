@@ -29,6 +29,7 @@ public class EasyConnectFragment extends Fragment {
 
     }
 
+
     public static EasyConnectFragment newInstance() {
         if (sEasyConnectFragment == null)
             sEasyConnectFragment = new EasyConnectFragment();
@@ -38,6 +39,11 @@ public class EasyConnectFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Nullable
@@ -65,7 +71,6 @@ public class EasyConnectFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateUI();
     }
 
     public void updateUI() {
