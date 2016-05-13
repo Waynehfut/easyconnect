@@ -323,7 +323,7 @@ public class Connection {
     /*
     * 连接到服务
     * */
-    public void connectServer(final String brokerURL, final String clientId) throws Exception {
+    public void connectServer(final String brokerURL, final String clientId) throws MqttException {
         mqttClient = new MqttClient(brokerURL, clientId, new MemoryPersistence());
         mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setCleanSession(true);

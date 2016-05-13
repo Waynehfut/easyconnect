@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,13 +143,13 @@ public class MQTTConnectFragment extends Fragment {
                         fab.hide();
                         disFab.show();
                         updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), "Client ID is " + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyConnectHistory());
-                    } catch (Exception e) {
+                    } catch (MqttException e) {
                         updateHistorydateAndUI(getString(R.string.failure_connect), e.toString(), Connection.ConnectionStatus.DISCONNECTED, new EasyConnectHistory());
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
 
-                        Snackbar.make(view, getString(R.string.conn_fail) + mServerId.getText().toString(), Snackbar.LENGTH_SHORT)
+                        Snackbar.make(view, getString(R.string.conn_fail) + e.toString(), Snackbar.LENGTH_SHORT)
                                 .setAction("Action", null).show();
-
+                        Log.i(TAG,e.toString());
                         connection.clear();
                         mConnStatus.setText(getString(R.string.Disconnect));
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
