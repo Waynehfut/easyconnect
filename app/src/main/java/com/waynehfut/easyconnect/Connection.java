@@ -328,7 +328,7 @@ public class Connection {
         mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setCleanSession(true);
         mqttConnectOptions.setConnectionTimeout(60);
-        mqttConnectOptions.setKeepAliveInterval(60);
+        mqttConnectOptions.setKeepAliveInterval(600000);
         mqttClient.connect(mqttConnectOptions);
 
     }
