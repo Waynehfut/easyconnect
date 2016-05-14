@@ -1,6 +1,9 @@
 package com.waynehfut.easyconnect;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import com.google.zxing.WriterException;
+import com.waynehfut.qrcode.QRCodeGenerator;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -35,6 +42,8 @@ public class MQTTPubFragment extends Fragment {
     private RadioGroup mQOSRadioGroup;
     private ChatHistoryLab chatHistoryLab;
     private PubCallBacks pubCallBacks;
+    private TextView qrCodeTextView;
+    private QRCodeGenerator qrCodeGenerator = QRCodeGenerator.newInstance();
     private int mQOS = 0;
     //    private CheckBox mIsHoldConn;
     private Connection connection = Connection.getConnection();
@@ -69,6 +78,7 @@ public class MQTTPubFragment extends Fragment {
         mTopicId = (EditText) view.findViewById(R.id.pub_topic);
         mMessage = (EditText) view.findViewById(R.id.pub_context);
         mQOSRadioGroup = (RadioGroup) view.findViewById(R.id.qosRadio);
+        qrCodeTextView = (TextView) view.findViewById(R.id.qr_code_view);
         smqttSubFragment = MQTTSubFragment.newInstance();
         mQOSRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -94,7 +104,12 @@ public class MQTTPubFragment extends Fragment {
             public void onClick(View view) {
                 try {
                     connection.publishMessage(mTopicId.getText().toString(), mMessage.getText().toString(), mQOS);
+                    Drawable drawable =new BitmapDrawable(getResources(),qrCodeGenerator.GenerateQRCode(mqttClient.getServerURI()+"&WAYNE&"+mTopicId.getText().toString()));
+                    qrCodeTextView.setBackground(drawable);
                 } catch (MqttException e) {
+                    Snackbar.make(view, getString(R.string.toast_pub_failed, mMessage.getText().toString(), mTopicId.getText().toString()) + connection.getServerId(), Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
+                }catch (WriterException e){
                     Snackbar.make(view, getString(R.string.toast_pub_failed, mMessage.getText().toString(), mTopicId.getText().toString()) + connection.getServerId(), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }

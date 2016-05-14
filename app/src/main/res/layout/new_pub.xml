@@ -24,10 +24,11 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="70dp"
         android:background="@drawable/background"
         android:paddingBottom="40dp">
 
@@ -132,17 +133,25 @@
             </TableRow>
 
         </TableLayout>
-    </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="300dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1212121" />
+            android:text="@string/QR_code"
+            android:gravity="center"
+            android:layout_marginTop="180dp"/>
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:id="@+id/qr_code_view"
+            android:background="@drawable/qr_code_sample"
+            android:text="" />
+
+
     </android.support.v7.widget.CardView>
 
     <android.support.design.widget.FloatingActionButton

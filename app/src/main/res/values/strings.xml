@@ -224,5 +224,6 @@
     <string name="no_btn">No,Go ahead anyway</string>
     <string name="scran_ecode">QR scan</string>
     <string name="notification">:</string>
+    <string name="QR_code">Scan QR code to join topic</string>
 
 </resources>

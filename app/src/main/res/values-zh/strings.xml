@@ -179,4 +179,5 @@
     <string name="yes_btn">好的,带我去吧</string>
     <string name="scran_ecode">扫描二维码</string>
     <string name="notification">:</string>
+    <string name="QR_code">扫描二维码加入话题</string>
 </resources>
