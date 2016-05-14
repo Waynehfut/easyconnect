@@ -1,21 +1,28 @@
 package com.waynehfut.easyconnect;
 
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Wayne on 2016/5/8.
@@ -23,10 +30,18 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
  * Mail:waynehfut@gmail.com
  */
 public class MQTTSubFragment extends Fragment {
+    private static final String TAG = "MQTTSubFragment";
     private static MQTTSubFragment smqttSubFragment;
     MqttClient mqttClient;
     private EditText mTopicId;
     private Connection connection = Connection.getConnection();
+
+    private RecyclerView mChatRecycleView;
+    private ChatHistoryLab chatHistoryLab;
+    private ChatHistoryAdapter chatHistoryAdapter;
+    private ChatHistory chatHistory;
+    private ChatHistoryAddCallback chatHistoryAddCallback;
+
 
     public static MQTTSubFragment newInstance() {
         if (smqttSubFragment == null)
@@ -44,11 +59,20 @@ public class MQTTSubFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        chatHistoryAddCallback=(ChatHistoryAddCallback)activity;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.new_sub, container, false);
         mTopicId = (EditText) view.findViewById(R.id.sub_topic);
+        chatHistoryLab=ChatHistoryLab.getsChatHistoryLab(getContext());
+        mChatRecycleView=(RecyclerView)view.findViewById(R.id.recycle_view);
+        mChatRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.verifyYesButton);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +83,7 @@ public class MQTTSubFragment extends Fragment {
                     Snackbar.make(view, getString(R.string.toast_sub_success, mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 } catch (Exception e) {
-                    Snackbar.make(view, getString(R.string.toast_sub_failed, mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
+                    Snackbar.make(view, getString(R.string.toast_sub_failed, mTopicId.getText().toString())+e.toString(), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
             }
@@ -76,18 +100,125 @@ public class MQTTSubFragment extends Fragment {
                 public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                     Snackbar.make(view, getString(R.string.messageRecieved, mqttMessage.toString(), topic) + mqttMessage.toString(), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
-                    NewMessageNotification.notify(getContext(),getString(R.string.messageRecieved, mqttMessage.toString(), topic),1);
+                    NewMessageNotification.notify(getContext(), getString(R.string.messageRecieved, mqttMessage.toString(), topic), 1);
+                    onChatRecieve(topic,mqttMessage.toString(),new Date(),"Income",new ChatHistory());
+                    updateChatUI();
                 }
 
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-
+                    Snackbar.make(view, getString(R.string.toast_pub_success," ", mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
                 }
             });
         }
         return view;
     }
-    public  interface SubCallBacks{
-        void showSubNewConntec();
+
+    public void updateChatUI() {
+        ChatHistoryLab chatHistoryLab = ChatHistoryLab.getsChatHistoryLab(getActivity());
+        List<ChatHistory> chatHistories = chatHistoryLab.getChatHistories();
+        if (chatHistoryAdapter == null) {
+            chatHistoryAdapter = new ChatHistoryAdapter(chatHistories);
+            mChatRecycleView.setAdapter(chatHistoryAdapter);
+        } else {
+            chatHistoryAdapter.setmChatHistories(chatHistories);
+            chatHistoryAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+
+    private void onChatRecieve(String chatClientId, String chatContext, Date chatDate, String chatType, ChatHistory chatHistory) {
+        chatHistory.setChatClientId(chatClientId);
+        chatHistory.setChatContext(chatContext);
+        chatHistory.setChatDate(chatDate);
+        chatHistory.setChatType(chatType);
+        chatHistoryLab.addChatHistory(chatHistory);
+    }
+
+
+    public interface ChatHistoryAddCallback {
+        void onChatHistoryAdd();
+    }
+
+    private class ChatHistoryAdapter extends RecyclerView.Adapter<ChatHistoryHolder> {
+        private List<ChatHistory> mChatHistories;
+
+        public ChatHistoryAdapter(List<ChatHistory> chatHistories) {
+            mChatHistories = chatHistories;
+        }
+
+        public void setmChatHistories(List<ChatHistory> mChatHistories) {
+            this.mChatHistories = mChatHistories;
+        }
+
+        @Override
+        public void onBindViewHolder(ChatHistoryHolder holder, int position) {
+            ChatHistory chatHistory = mChatHistories.get(position);
+            holder.bindChatHistory(chatHistory);
+        }
+
+        @Override
+        public ChatHistoryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            View view = layoutInflater.inflate(R.layout.chat_item, parent, false);
+            return new ChatHistoryHolder(view);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mChatHistories.size();
+        }
+    }
+
+    private class ChatHistoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView mChatClientId;
+        private TextView mChatContext;
+        private TextView mChatDate;
+        private LinearLayout mChatItemBox;
+        private ChatHistory mChatHistory;
+
+
+        public ChatHistoryHolder(View chatHistoryView) {
+            super(chatHistoryView);
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return true;
+                }
+            });
+            mChatClientId = (TextView) chatHistoryView.findViewById(R.id.chat_clientId);
+            mChatContext = (TextView) chatHistoryView.findViewById(R.id.chat_context);
+            mChatDate = (TextView) chatHistoryView.findViewById(R.id.chat_date);
+            mChatItemBox = (LinearLayout) chatHistoryView.findViewById(R.id.chat_item_box);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+        }
+
+        public void bindChatHistory(ChatHistory chatHistory) {
+            if (chatHistory != null) {
+                mChatHistory = chatHistory;
+                mChatClientId.setText(mChatHistory.getChatClientId());
+                mChatContext.setText(mChatHistory.getChatContext());
+                String formatDate = DateFormat.format("EEEE, MMMM dd, yyyy", mChatHistory.getChatDate()).toString();
+                mChatDate.setText(formatDate);
+                mChatItemBox.setBackground(getResources().getDrawable(setChatItemBoxByType(mChatHistory.getChatType())));
+            }
+        }
+
+        public int setChatItemBoxByType(String chatType) {
+            switch (chatType) {
+                case "Income":
+                    return R.drawable.msg_bubble_incoming;
+                case "Outcome":
+                    return R.drawable.msg_bubble_outgoing;
+                default:
+                    return R.drawable.msg_bubble_incoming;
+            }
+        }
     }
 }

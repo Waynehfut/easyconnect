@@ -30,16 +30,21 @@ public class ChatHistoryLab {
     public void addChatHistory(ChatHistory chatHistory) {
         mChathistories.add(chatHistory);
     }
-    public ArrayList<ChatHistory> getmChathistories(){
+
+    public ArrayList<ChatHistory> getmChathistories() {
         return mChathistories;
     }
-    public ChatHistory getChatHistory(UUID chatUID){
-        for (ChatHistory chatHistory:mChathistories){
-            if (chatHistory.getChatUUID().equals(chatUID)){
+
+    public ChatHistory getChatHistory(UUID chatUID) {
+        for (ChatHistory chatHistory : mChathistories) {
+            if (chatHistory.getChatUUID().equals(chatUID)) {
                 return chatHistory;
             }
         }
         return null;
     }
 
+    public ArrayList<ChatHistory> getChatHistories() {
+        return mChathistories;
+    }
 }

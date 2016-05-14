@@ -1,24 +1,24 @@
 package com.waynehfut.easyconnect;
 
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.util.Date;
 
 /**
  * Created by Wayne on 2016/5/8.
@@ -28,12 +28,15 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class MQTTPubFragment extends Fragment {
     private static final String TAG = "MQTTPubFragment";
     private static MQTTPubFragment smqttPubFragment;
+    private static MQTTSubFragment smqttSubFragment;
     MqttClient mqttClient;
     private EditText mTopicId;
     private EditText mMessage;
     private RadioGroup mQOSRadioGroup;
+    private ChatHistoryLab chatHistoryLab;
+    private PubCallBacks pubCallBacks;
     private int mQOS = 0;
-//    private CheckBox mIsHoldConn;
+    //    private CheckBox mIsHoldConn;
     private Connection connection = Connection.getConnection();
 
     public static MQTTPubFragment newInstance() {
@@ -48,6 +51,12 @@ public class MQTTPubFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        pubCallBacks = (PubCallBacks) activity;
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
@@ -55,10 +64,12 @@ public class MQTTPubFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
+        chatHistoryLab = ChatHistoryLab.getsChatHistoryLab(getContext());
         final View view = inflater.inflate(R.layout.new_pub, container, false);
         mTopicId = (EditText) view.findViewById(R.id.pub_topic);
         mMessage = (EditText) view.findViewById(R.id.pub_context);
         mQOSRadioGroup = (RadioGroup) view.findViewById(R.id.qosRadio);
+        smqttSubFragment = MQTTSubFragment.newInstance();
         mQOSRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -83,7 +94,7 @@ public class MQTTPubFragment extends Fragment {
             public void onClick(View view) {
                 try {
                     connection.publishMessage(mTopicId.getText().toString(), mMessage.getText().toString(), mQOS);
-                } catch (Exception e) {
+                } catch (MqttException e) {
                     Snackbar.make(view, getString(R.string.toast_pub_failed, mMessage.getText().toString(), mTopicId.getText().toString()) + connection.getServerId(), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
@@ -94,13 +105,18 @@ public class MQTTPubFragment extends Fragment {
             mqttClient.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable throwable) {
-
+                    try {
+                        mqttClient.connect();
+                    } catch (Exception p) {
+                        updateSubUIafterPub(mTopicId.getText().toString(), "LostConnect", new Date(), "Income", new ChatHistory());
+                        p.printStackTrace();
+                    }
                 }
 
                 @Override
                 public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                    Snackbar.make(view, getString(R.string.messageRecieved, mqttMessage.toString(), topic) + mqttMessage.toString(), Snackbar.LENGTH_SHORT)
-                            .setAction("Action", null).show();
+                    NewMessageNotification.notify(getContext(), getString(R.string.messageRecieved, mqttMessage.toString(), topic), 1);
+                    updateSubUIafterPub(topic, mqttMessage.toString(), new Date(), "Income", new ChatHistory());
                 }
 
                 @Override
@@ -108,16 +124,25 @@ public class MQTTPubFragment extends Fragment {
                     connection.setmPubTopic(mTopicId.getText().toString());
                     Snackbar.make(view, getString(R.string.toast_pub_success, mMessage.getText().toString(), mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
+                    updateSubUIafterPub(mTopicId.getText().toString(), mMessage.getText().toString(), new Date(), "Outcome", new ChatHistory());
+
                 }
             });
         }
         return view;
     }
 
-    public void pubSnakBarMessage(String tosat) {
-        Toast.makeText(getContext(), tosat, Toast.LENGTH_SHORT);
+    private void updateSubUIafterPub(String clientId, String chatContex, Date chatDate, String chatType, ChatHistory chatHistory) {
+        chatHistory.setChatClientId(clientId);
+        chatHistory.setChatContext(chatContex);
+        chatHistory.setChatDate(chatDate);
+        chatHistory.setChatType(chatType);
+        chatHistoryLab.addChatHistory(chatHistory);
+        pubCallBacks.updateSubUIAfterPub();
+
     }
-    public  interface PubCallBacks{
-        void showPubNewConntec();
+
+    public interface PubCallBacks {
+        void updateSubUIAfterPub();
     }
 }

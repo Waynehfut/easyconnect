@@ -1,6 +1,5 @@
 package com.waynehfut.easyconnect;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -17,14 +16,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 public class EasyConnectActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,MQTTConnectFragment.HistoryAddCallback {
+        implements NavigationView.OnNavigationItemSelectedListener,MQTTConnectFragment.HistoryAddCallback,MQTTSubFragment.ChatHistoryAddCallback,MQTTPubFragment.PubCallBacks {
     private static final String TAG = "EasyConnectActivity";
     MQTTConnectFragment netConnectFragment;
     EasyConnectFragment easyConnectFragment;
@@ -39,6 +37,16 @@ public class EasyConnectActivity extends AppCompatActivity
     @Override
     public void onHistoryAdd() {
         easyConnectFragment.updateUI();
+    }
+
+    @Override
+    public void onChatHistoryAdd() {
+        subTopicFragment.updateChatUI();
+    }
+
+    @Override
+    public void updateSubUIAfterPub() {
+        subTopicFragment.updateChatUI();
     }
 
     @Override
@@ -61,6 +69,9 @@ public class EasyConnectActivity extends AppCompatActivity
             fragment = easyConnectFragment;
             if (getSupportFragmentManager().findFragmentByTag("Index") == null)
                 getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, fragment, "Index").commit();
+            if (getSupportFragmentManager().findFragmentByTag("Sub") == null)
+                getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, subTopicFragment, "Sub").commit();
+            showOnlyOne(easyConnectFragment);
         }
 
 

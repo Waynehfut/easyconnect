@@ -339,7 +339,7 @@ public class Connection {
 
     }
 
-    public void publishMessage(String topic, String content, int qos) throws Exception {
+    public void publishMessage(String topic, String content, int qos) throws MqttException {
         MqttMessage newMessage = new MqttMessage(content.getBytes());
         newMessage.setQos(qos);
         if (mqttClient != null) {
