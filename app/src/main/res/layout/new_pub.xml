@@ -22,10 +22,14 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="60dp">
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/background">
 
         <TableLayout
             android:layout_width="match_parent"
@@ -82,7 +86,7 @@
                     />
             </TableRow>
 
-            <TableRow>
+            <TableRow android:paddingBottom="20dp">
 
                 <TextView
                     android:layout_width="0dp"
@@ -146,7 +150,7 @@
                     <!--android:textSize="7pt" />-->
             </TableRow>
         </TableLayout>
-    </ScrollView>
+    </android.support.v7.widget.CardView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/verifyYesButton"

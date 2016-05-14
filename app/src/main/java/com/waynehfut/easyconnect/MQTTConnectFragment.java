@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,6 +41,7 @@ public class MQTTConnectFragment extends Fragment {
     private EasyHistoryLab easyHistoryLab;
     private EasyConnectFragment easyConnectFragment;
     private HistoryAddCallback historyAddCallback;
+    private TextView connectText;
 
 
     public MQTTConnectFragment() {
@@ -98,6 +98,7 @@ public class MQTTConnectFragment extends Fragment {
             mConnStatus = (TextView) view.findViewById(R.id.connect_status);
             mIsRemember = (CheckBox) view.findViewById(R.id.isRemember);
             easyHistoryLab = EasyHistoryLab.getEasyHistoryLab(getContext());
+            connectText = (TextView) view.findViewById(R.id.connect_status_text);
 
             easyConnectFragment = EasyConnectFragment.newInstance();
             /*
@@ -119,12 +120,13 @@ public class MQTTConnectFragment extends Fragment {
                 connection.setServerId(mServerId.getText().toString());
                 connection.setPort(mPort.getText().toString());
                 connection.setClientId(mClientId.getText().toString());
-                mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
-                mConnStatus.setText(getString(R.string.connect));
+                mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_connect));
+                connectText.setText(getString(R.string.connect));
+
             }
             if (connection.getConnectionStatus() == Connection.ConnectionStatus.DISCONNECTED) {
-                mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-                mConnStatus.setText(getString(R.string.disconnected));
+                mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_disconnect));
+                connectText.setText(getString(R.string.disconnected));
             }
 
             fab.setOnClickListener(new View.OnClickListener() {
@@ -138,22 +140,26 @@ public class MQTTConnectFragment extends Fragment {
                                 .setAction("Action", null).show();
 
                         connection.setConnectionStatus(Connection.ConnectionStatus.CONNECTED);
-                        mConnStatus.setText(getString(R.string.connect));
-                        mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+
+                        mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_connect));
+                        connectText.setText(getString(R.string.connect));
+//                        mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
                         fab.hide();
                         disFab.show();
                         updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), getString(R.string.to_string) + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyHistory());
                     } catch (Exception e) {
-                        updateHistorydateAndUI(getString(R.string.failure_connect), e.toString(), Connection.ConnectionStatus.DISCONNECTED, new EasyHistory());
+                        updateHistorydateAndUI(getString(R.string.failure_connect), e.toString().substring(0, 32), Connection.ConnectionStatus.DISCONNECTED, new EasyHistory());
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
 
                         Snackbar.make(view, getString(R.string.conn_fail) + e.toString(), Snackbar.LENGTH_SHORT)
                                 .setAction("Action", null).show();
-                        Log.i(TAG,e.toString());
+                        Log.i(TAG, e.toString());
                         connection.clear();
-                        mConnStatus.setText(getString(R.string.Disconnect));
+
+                        mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_disconnect));
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
-                        mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        connectText.setText(getString(R.string.disconnected));
+//                        mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
                     }
                 }
             });
@@ -169,13 +175,13 @@ public class MQTTConnectFragment extends Fragment {
                                 public void onClick(DialogInterface dialog, int which) {
                                     try {
                                         connection.disConnectServer();
-                                        mConnStatus.setText(getString(R.string.disconnected));
-                                        mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                                        mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_disconnect));
                                         updateHistorydateAndUI(getString(R.string.disconnected), " ", Connection.ConnectionStatus.DISCONNECTED, new EasyHistory());
+                                        connectText.setText(getString(R.string.disconnected));
                                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
                                     } catch (MqttException e) {
                                         String errorInfo = e.toString();
-                                        mConnStatus.setText(getString(R.string.failure_disconnect) + errorInfo);
+                                        connectText.setText(getString(R.string.failure_disconnect) + errorInfo);
                                     } finally {
                                         disFab.hide();
                                         fab.show();
@@ -195,15 +201,15 @@ public class MQTTConnectFragment extends Fragment {
                 mIsRemember.setChecked(true);
                 switch (connection.getConnectionStatus()) {
                     case CONNECTED:
-                        mConnStatus.setText(getString(R.string.connect));
-                        mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+                        mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_connect));
+                        connectText.setText(getString(R.string.connect));
                         break;
                     case DISCONNECTED:
-                        mConnStatus.setText(getString(R.string.Disconnect));
-                        mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_disconnect));
+                        connectText.setText(getString(R.string.disconnected));
                         break;
                     default:
-                        mConnStatus.setText(getString(R.string.no_status));
+                        connectText.setText(getString(R.string.disconnected));
                 }
             } else {
                 mServerId.setText("");
