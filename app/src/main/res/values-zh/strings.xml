@@ -6,7 +6,7 @@
     <string name="navigation_drawer_open">开启导航抽屉</string>
     <string name="new_connection">新链接</string>
     <string name="publish_title">发布消息</string>
-    <string name="subscribe_title">订阅话题</string>
+    <string name="subscribe_title">订阅与查看</string>
     <string name="drawer_setting">软件设置</string>
     <string name="MenuTwoTitle">其他</string>
     <string name="Share_present_topic">分享当前话题</string>
