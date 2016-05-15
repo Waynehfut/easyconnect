@@ -35,14 +35,6 @@ public class ChatHistoryLab {
         return mChathistories;
     }
 
-    public ChatHistory getChatHistory(UUID chatUID) {
-        for (ChatHistory chatHistory : mChathistories) {
-            if (chatHistory.getChatUUID().equals(chatUID)) {
-                return chatHistory;
-            }
-        }
-        return null;
-    }
 
     public ArrayList<ChatHistory> getChatHistories() {
         return mChathistories;

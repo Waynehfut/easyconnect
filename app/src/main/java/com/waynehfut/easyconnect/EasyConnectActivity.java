@@ -3,6 +3,7 @@ package com.waynehfut.easyconnect;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
@@ -20,37 +21,73 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.waynehfut.zxing.android.CaptureActivity;
 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.util.Date;
+
 public class EasyConnectActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,MQTTConnectFragment.HistoryAddCallback,MQTTSubFragment.ChatHistoryAddCallback,MQTTPubFragment.PubCallBacks {
+        implements NavigationView.OnNavigationItemSelectedListener, MQTTConnectFragment.HistoryAddCallback {
     private static final String TAG = "EasyConnectActivity";
     private static final int REQUEST_CODE_SCAN = 0x0000;
+    private static final String DECODED_CONTENT_KEY = "codedContent";
+    private static final String DECODED_BITMAP_KEY = "codedBitmap";
     MQTTConnectFragment netConnectFragment;
     EasyConnectFragment easyConnectFragment;
     MQTTPubFragment pubMessageFragment;
     MQTTSubFragment subTopicFragment;
+    MqttClient mqttClient;
     Fragment currentFragement;
     Connection connection = Connection.getConnection();
     private long exitTime = 0;
-//    Fragment softwareSettingFragment;
+    private ChatHistoryLab chatHistoryLab;
 
 
     @Override
     public void onHistoryAdd() {
         easyConnectFragment.updateUI();
+        mqttClient = connection.getMqttClient();
+        mqttClient.setCallback(new MqttCallback() {
+            @Override
+            public void connectionLost(Throwable throwable) {
+                try {
+                    mqttClient.connect();
+                } catch (Exception p) {
+                    p.printStackTrace();
+                }
+            }
+
+            @Override
+            public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+//                NewMessageNotification.notify(getApplicationContext(), getString(R.string.messageRecieved, mqttMessage.toString(), mqttMessage.getQos()), 1);
+                ChatHistory chatHistory = new ChatHistory();
+                chatHistory.setChatClientId(connection.getmTopic());
+                chatHistory.setChatContext(mqttMessage.toString());
+                chatHistory.setChatDate(new Date());
+                chatHistory.setChatType("Income");
+                chatHistoryLab.addChatHistory(chatHistory);
+                subTopicFragment.updateChatUI();
+            }
+
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+                ChatHistory chatHistory = new ChatHistory();
+                chatHistory.setChatClientId(connection.getmTopic());
+                chatHistory.setChatContext(connection.getPubContext());
+                chatHistory.setChatDate(new Date());
+                chatHistory.setChatType("Outcome");
+                chatHistoryLab.addChatHistory(chatHistory);
+                subTopicFragment.updateChatUI();
+            }
+        });
     }
 
-    @Override
-    public void onChatHistoryAdd() {
-        subTopicFragment.updateChatUI();
-    }
-
-    @Override
-    public void updateSubUIAfterPub() {
-        subTopicFragment.updateChatUI();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +96,7 @@ public class EasyConnectActivity extends AppCompatActivity
         pubMessageFragment = MQTTPubFragment.newInstance();
         subTopicFragment = MQTTSubFragment.newInstance();
         currentFragement = easyConnectFragment;
+        chatHistoryLab = ChatHistoryLab.getsChatHistoryLab(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_easy_connect);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -77,7 +115,6 @@ public class EasyConnectActivity extends AppCompatActivity
             showOnlyOne(easyConnectFragment);
         }
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,6 +123,8 @@ public class EasyConnectActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
 
@@ -166,7 +205,15 @@ public class EasyConnectActivity extends AppCompatActivity
         /*
         * 扫描结果
         * */
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+            if (data != null) {
+                String content = data.getStringExtra(DECODED_CONTENT_KEY);
+                Bitmap bitmap = data.getParcelableExtra(DECODED_BITMAP_KEY);
+// TODO: 2016/5/16  to realize qrcode action after scan
+                Toast.makeText(this, content, Toast.LENGTH_LONG).show();
 
+            }
+        }
 
     }
 

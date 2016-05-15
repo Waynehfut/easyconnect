@@ -79,7 +79,7 @@
     <string name="title_activity_subscribe">订阅</string>
     <string name="toast_disconnected">已断开</string>
     <string name="toast_pub_failed">发布消息失败: %1$s 到话题: %2$s</string>
-    <string name="toast_pub_success">成功发布消息: %1$s 到话题: %2$s</string>
+    <string name="toast_pub_success">成功发布消息</string>
     <string name="toast_sub_failed">订阅 %1$s 失败</string>
     <string name="toast_sub_success">已订阅到 %1$s</string>
     <string name="token">org.eclipse.paho.android.service.sample.ClientConnections</string>
@@ -184,4 +184,5 @@
     <string name="button_ok">好</string>
     <string name="viewfinderview_status_text1">将二维码加入取景框中</string>
     <string name="viewfinderview_status_text2">将会自动解码</string>
+    <string name="genera_code_failed">二维码生成失败</string>
 </resources>

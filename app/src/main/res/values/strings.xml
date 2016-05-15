@@ -83,7 +83,7 @@
     <!-- Strings that need formatting  -->
     <string name="messageRecieved">Received message %1$s Topic: %2$s </string>
     <string name="timestamp">&lt;br/&gt; &lt;small&gt; %1$s &lt;/small&gt;</string>
-    <string name="toast_pub_success">Published message: %1$s to topic: %2$s success!</string>
+    <string name="toast_pub_success">Published message</string>
     <string name="toast_sub_success">Subscribed to %1$s</string>
     <string name="toast_disconnected">Disconnected</string>
     <string name="toast_pub_failed">Failed to publish message: %1$s to topic: %2$s</string>
@@ -229,5 +229,6 @@
     <string name="button_ok">Ok</string>
     <string name="viewfinderview_status_text1">Pub QR code to Capture</string>
     <string name="viewfinderview_status_text2">will decode</string>
+    <string name="genera_code_failed">generate QR code fail</string>
 
 </resources>

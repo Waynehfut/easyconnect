@@ -15,13 +15,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,7 +37,6 @@ public class MQTTSubFragment extends Fragment {
     private ChatHistoryLab chatHistoryLab;
     private ChatHistoryAdapter chatHistoryAdapter;
     private ChatHistory chatHistory;
-    private ChatHistoryAddCallback chatHistoryAddCallback;
 
 
     public static MQTTSubFragment newInstance() {
@@ -62,7 +58,6 @@ public class MQTTSubFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        chatHistoryAddCallback=(ChatHistoryAddCallback)activity;
     }
 
     @Nullable
@@ -70,8 +65,8 @@ public class MQTTSubFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.new_sub, container, false);
         mTopicId = (EditText) view.findViewById(R.id.sub_topic);
-        chatHistoryLab=ChatHistoryLab.getsChatHistoryLab(getContext());
-        mChatRecycleView=(RecyclerView)view.findViewById(R.id.recycle_view);
+        chatHistoryLab = ChatHistoryLab.getsChatHistoryLab(getContext());
+        mChatRecycleView = (RecyclerView) view.findViewById(R.id.recycle_view);
         mChatRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.verifyYesButton);
 
@@ -80,38 +75,14 @@ public class MQTTSubFragment extends Fragment {
             public void onClick(View view) {
                 try {
                     connection.subMessage(mTopicId.getText().toString());
-                    Snackbar.make(view, getString(R.string.toast_sub_success, mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
-                            .setAction("Action", null).show();
+                    connection.setmTopic(mTopicId.getText().toString());
+                    Toast.makeText(getContext(), getString(R.string.toast_sub_success, mTopicId.getText().toString()), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Snackbar.make(view, getString(R.string.toast_sub_failed, mTopicId.getText().toString())+e.toString(), Snackbar.LENGTH_SHORT)
+                    Snackbar.make(view, getString(R.string.toast_sub_failed, mTopicId.getText().toString()) + e.toString(), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
             }
         });
-        if (connection.getMqttClient() != null) {
-            mqttClient = connection.getMqttClient();
-            mqttClient.setCallback(new MqttCallback() {
-                @Override
-                public void connectionLost(Throwable throwable) {
-
-                }
-
-                @Override
-                public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                    Snackbar.make(view, getString(R.string.messageRecieved, mqttMessage.toString(), topic) + mqttMessage.toString(), Snackbar.LENGTH_SHORT)
-                            .setAction("Action", null).show();
-                    NewMessageNotification.notify(getContext(), getString(R.string.messageRecieved, mqttMessage.toString(), topic), 1);
-                    onChatRecieve(topic,mqttMessage.toString(),new Date(),"Income",new ChatHistory());
-                    updateChatUI();
-                }
-
-                @Override
-                public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-                    Snackbar.make(view, getString(R.string.toast_pub_success," ", mTopicId.getText().toString()), Snackbar.LENGTH_SHORT)
-                            .setAction("Action", null).show();
-                }
-            });
-        }
         return view;
     }
 
@@ -126,20 +97,6 @@ public class MQTTSubFragment extends Fragment {
             chatHistoryAdapter.notifyDataSetChanged();
         }
 
-    }
-
-
-    private void onChatRecieve(String chatClientId, String chatContext, Date chatDate, String chatType, ChatHistory chatHistory) {
-        chatHistory.setChatClientId(chatClientId);
-        chatHistory.setChatContext(chatContext);
-        chatHistory.setChatDate(chatDate);
-        chatHistory.setChatType(chatType);
-        chatHistoryLab.addChatHistory(chatHistory);
-    }
-
-
-    public interface ChatHistoryAddCallback {
-        void onChatHistoryAdd();
     }
 
     private class ChatHistoryAdapter extends RecyclerView.Adapter<ChatHistoryHolder> {

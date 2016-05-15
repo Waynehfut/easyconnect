@@ -133,6 +133,7 @@ public class MQTTConnectFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     try {
+
                         brokerURL = "tcp://" + mServerId.getText().toString() + ":" + mPort.getText().toString();
                         connection.connectServer(brokerURL, mClientId.getText().toString());
                         updateHistorydateAndUI(getString(R.string.new_connection), " ", Connection.ConnectionStatus.NEWCONNECT, new EasyHistory());
@@ -143,7 +144,6 @@ public class MQTTConnectFragment extends Fragment {
 
                         mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_connect));
                         connectText.setText(getString(R.string.connect));
-//                        mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
                         fab.hide();
                         disFab.show();
                         updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), getString(R.string.to_string) + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyHistory());
@@ -159,7 +159,6 @@ public class MQTTConnectFragment extends Fragment {
                         mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_disconnect));
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
                         connectText.setText(getString(R.string.disconnected));
-//                        mConnStatus.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
                     }
                 }
             });

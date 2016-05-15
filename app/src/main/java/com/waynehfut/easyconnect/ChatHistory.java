@@ -22,7 +22,6 @@ public class ChatHistory {
     private String chatContext;
     private Date chatDate;
     private String chatType;
-    private UUID chatUUID;
 
     public String getChatType() {
         return chatType;
@@ -60,12 +59,5 @@ public class ChatHistory {
         this.chatDate = chatDate;
     }
 
-    public UUID getChatUUID() {
-        return chatUUID;
-    }
-
-    public void setChatUUID(UUID chatUUID) {
-        this.chatUUID = chatUUID;
-    }
 
 }
