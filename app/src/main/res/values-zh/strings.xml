@@ -180,4 +180,8 @@
     <string name="scran_ecode">扫描二维码</string>
     <string name="notification">:</string>
     <string name="QR_code">扫描二维码加入话题</string>
+    <string name="msg_camera_framework_bug">相机故障</string>
+    <string name="button_ok">好</string>
+    <string name="viewfinderview_status_text1">将二维码加入取景框中</string>
+    <string name="viewfinderview_status_text2">将会自动解码</string>
 </resources>

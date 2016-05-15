@@ -21,9 +21,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.waynehfut.zxing.android.CaptureActivity;
+
 public class EasyConnectActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,MQTTConnectFragment.HistoryAddCallback,MQTTSubFragment.ChatHistoryAddCallback,MQTTPubFragment.PubCallBacks {
     private static final String TAG = "EasyConnectActivity";
+    private static final int REQUEST_CODE_SCAN = 0x0000;
     MQTTConnectFragment netConnectFragment;
     EasyConnectFragment easyConnectFragment;
     MQTTPubFragment pubMessageFragment;
@@ -148,12 +151,23 @@ public class EasyConnectActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            ScarnEcode scarnEcode = new ScarnEcode();
-            scarnEcode.doScarn();
+            Intent intent = new Intent(EasyConnectActivity.this,
+                    CaptureActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_SCAN);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /*
+        * 扫描结果
+        * */
+
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

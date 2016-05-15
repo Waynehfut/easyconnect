@@ -225,5 +225,9 @@
     <string name="scran_ecode">QR scan</string>
     <string name="notification">:</string>
     <string name="QR_code">Scan QR code to join topic</string>
+    <string name="msg_camera_framework_bug">Camera bug</string>
+    <string name="button_ok">Ok</string>
+    <string name="viewfinderview_status_text1">Pub QR code to Capture</string>
+    <string name="viewfinderview_status_text2">will decode</string>
 
 </resources>
