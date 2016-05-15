@@ -117,9 +117,9 @@ public class MQTTConnectFragment extends Fragment {
             if (connection.getConnectionStatus() == Connection.ConnectionStatus.CONNECTED) {
                 fab.hide();
                 disFab.show();
-                connection.setServerId(mServerId.getText().toString());
-                connection.setPort(mPort.getText().toString());
-                connection.setClientId(mClientId.getText().toString());
+                mServerId.setText(connection.getServerId());
+                mPort.setText(connection.getPort());
+                mClientId.setText(connection.getClientId());
                 mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_connect));
                 connectText.setText(getString(R.string.connect));
 
@@ -140,6 +140,9 @@ public class MQTTConnectFragment extends Fragment {
                         Snackbar.make(view, getString(R.string.con_success) + mServerId.getText().toString() + getString(R.string.to_string) + mClientId.getText().toString(), Snackbar.LENGTH_SHORT)
                                 .setAction("Action", null).show();
 
+
+                        connection.setServerId(mServerId.getText().toString());
+                        connection.setPort(mPort.getText().toString());
                         connection.setConnectionStatus(Connection.ConnectionStatus.CONNECTED);
 
                         mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_connect));

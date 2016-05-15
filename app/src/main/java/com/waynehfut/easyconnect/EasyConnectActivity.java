@@ -21,8 +21,10 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.waynehfut.zxing.android.CaptureActivity;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -209,8 +211,26 @@ public class EasyConnectActivity extends AppCompatActivity
             if (data != null) {
                 String content = data.getStringExtra(DECODED_CONTENT_KEY);
                 Bitmap bitmap = data.getParcelableExtra(DECODED_BITMAP_KEY);
-// TODO: 2016/5/16  to realize qrcode action after scan
-                Toast.makeText(this, content, Toast.LENGTH_LONG).show();
+                // TODO: 2016/5/16  to realize qrcode action after scan
+                Gson gson = new Gson();
+                QRcodeInfo qRcodeInfo = new QRcodeInfo();
+                qRcodeInfo = gson.fromJson(content, QRcodeInfo.class);
+                try {
+                    // TODO: 2016/5/16 update function after scan qr code
+                    connection.connectServer(qRcodeInfo.getUrl(), qRcodeInfo.getTopic() + new Date());
+                    connection.setmTopic(qRcodeInfo.getTopic());
+                    connection.setServerId(qRcodeInfo.getUrl().substring(6, qRcodeInfo.getUrl().length() - 5));
+                    connection.setPort(qRcodeInfo.getUrl().substring(qRcodeInfo.getUrl().length() - 4, qRcodeInfo.getUrl().length()));
+                    connection.setConnectionStatus(Connection.ConnectionStatus.CONNECTED);
+                    connection.setClientId(qRcodeInfo.getTopic() + new Date());
+                    showOnlyOne(subTopicFragment);
+                    View view = getWindow().getDecorView();
+                    TextView textView = (TextView) view.findViewById(R.id.sub_topic);
+                    textView.setText(qRcodeInfo.getTopic());
+                } catch (Exception e) {
+                    Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         }
