@@ -210,7 +210,6 @@ public class EasyConnectActivity extends AppCompatActivity
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
             if (data != null) {
                 String content = data.getStringExtra(DECODED_CONTENT_KEY);
-                Bitmap bitmap = data.getParcelableExtra(DECODED_BITMAP_KEY);
                 // TODO: 2016/5/16  to realize qrcode action after scan
                 Gson gson = new Gson();
                 QRcodeInfo qRcodeInfo = new QRcodeInfo();
@@ -227,12 +226,16 @@ public class EasyConnectActivity extends AppCompatActivity
                     View view = getWindow().getDecorView();
                     TextView textView = (TextView) view.findViewById(R.id.sub_topic);
                     textView.setText(qRcodeInfo.getTopic());
+                    Toast.makeText(this, getString(R.string.scan_success), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.scan_fail), Toast.LENGTH_SHORT).show();
                 }
 
 
             }
+        }
+        else if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_CANCELED){
+            Toast.makeText(this,getString(R.string.scan_not_url),Toast.LENGTH_SHORT).show();
         }
 
     }

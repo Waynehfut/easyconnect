@@ -185,4 +185,7 @@
     <string name="viewfinderview_status_text1">将二维码加入取景框中</string>
     <string name="viewfinderview_status_text2">将会自动解码</string>
     <string name="genera_code_failed">二维码生成失败</string>
+    <string name="scan_success">扫描成功</string>
+    <string name="scan_fail">扫描失败，请检查二维码是否正确</string>
+    <string name="scan_not_url">你扫描的不是我们的链接</string>
 </resources>

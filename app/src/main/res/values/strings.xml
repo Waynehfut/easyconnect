@@ -230,5 +230,8 @@
     <string name="viewfinderview_status_text1">Pub QR code to Capture</string>
     <string name="viewfinderview_status_text2">will decode</string>
     <string name="genera_code_failed">generate QR code fail</string>
+    <string name="scan_success">Scan success</string>
+    <string name="scan_fail">Scan fail，pls check QR code</string>
+    <string name="scan_not_url">What your scan is not our QR code</string>
 
 </resources>

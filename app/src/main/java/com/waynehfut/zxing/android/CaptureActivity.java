@@ -14,9 +14,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
+import com.waynehfut.easyconnect.QRcodeInfo;
 import com.waynehfut.easyconnect.R;
 import com.waynehfut.zxing.camera.CameraManager;
 import com.waynehfut.zxing.view.ViewfinderView;
@@ -183,11 +186,20 @@ public final class CaptureActivity extends Activity implements
         if (fromLiveScan) {
             beepManager.playBeepSoundAndVibrate();
 
-            Toast.makeText(this, "扫描成功", Toast.LENGTH_SHORT).show();
 
+
+            String result= rawResult.getText();
             Intent intent = getIntent();
             intent.putExtra("codedContent", rawResult.getText());
-            intent.putExtra("codedBitmap", barcode);
+            try {
+                Gson gson = new Gson();
+                QRcodeInfo qRcodeInfo = new QRcodeInfo();
+                qRcodeInfo = gson.fromJson(result, QRcodeInfo.class);
+            }catch (Exception e){
+                setResult(RESULT_CANCELED,intent);
+                finish();
+            }
+
             setResult(RESULT_OK, intent);
             finish();
         }
