@@ -67,7 +67,7 @@ public class EasyConnectActivity extends AppCompatActivity
 
             @Override
             public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-//                NewMessageNotification.notify(getApplicationContext(), getString(R.string.messageRecieved, mqttMessage.toString(), mqttMessage.getQos()), 1);
+                NewMessageNotification.notify(getApplicationContext(), getString(R.string.messageRecieved, mqttMessage.toString(), mqttMessage.getQos()), 1);
                 ChatHistory chatHistory = new ChatHistory();
                 chatHistory.setChatClientId(connection.getmTopic());
                 chatHistory.setChatContext(mqttMessage.toString());
