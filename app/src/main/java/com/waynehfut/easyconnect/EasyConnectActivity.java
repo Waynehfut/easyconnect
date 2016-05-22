@@ -3,7 +3,6 @@ package com.waynehfut.easyconnect;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
@@ -17,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.waynehfut.Lz77.MsgLzHelper;
 import com.waynehfut.zxing.android.CaptureActivity;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -50,6 +51,11 @@ public class EasyConnectActivity extends AppCompatActivity
     private long exitTime = 0;
     private ChatHistoryLab chatHistoryLab;
 
+    private MsgLzHelper msgLzHelper = new MsgLzHelper();
+    private String depressTopic;
+    private String depressContext;
+
+
 
     @Override
     public void onHistoryAdd() {
@@ -67,7 +73,8 @@ public class EasyConnectActivity extends AppCompatActivity
 
             @Override
             public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-                NewMessageNotification.notify(getApplicationContext(), getString(R.string.messageRecieved, mqttMessage.toString(), mqttMessage.getQos()), 1);
+                depressContext = msgLzHelper.DecompressLZ77(mqttMessage.toString());
+                NewMessageNotification.notify(getApplicationContext(), getString(R.string.messageRecieved, depressContext, s), 1);
                 ChatHistory chatHistory = new ChatHistory();
                 chatHistory.setChatClientId(connection.getmTopic());
                 chatHistory.setChatContext(mqttMessage.toString());
@@ -97,7 +104,6 @@ public class EasyConnectActivity extends AppCompatActivity
         easyConnectFragment = EasyConnectFragment.newInstance();
         pubMessageFragment = MQTTPubFragment.newInstance();
         subTopicFragment = MQTTSubFragment.newInstance();
-        currentFragement = easyConnectFragment;
         chatHistoryLab = ChatHistoryLab.getsChatHistoryLab(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_easy_connect);
@@ -112,8 +118,12 @@ public class EasyConnectActivity extends AppCompatActivity
             fragment = easyConnectFragment;
             if (getSupportFragmentManager().findFragmentByTag("Index") == null)
                 getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, fragment, "Index").commit();
+            if (getSupportFragmentManager().findFragmentByTag("Connect") == null)
+                getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, netConnectFragment, "Sub").commit();
             if (getSupportFragmentManager().findFragmentByTag("Sub") == null)
                 getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, subTopicFragment, "Sub").commit();
+            if (getSupportFragmentManager().findFragmentByTag("Pub") == null)
+                getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, pubMessageFragment, "Sub").commit();
             showOnlyOne(easyConnectFragment);
         }
 
@@ -223,19 +233,23 @@ public class EasyConnectActivity extends AppCompatActivity
                     connection.setConnectionStatus(Connection.ConnectionStatus.CONNECTED);
                     connection.setClientId(qRcodeInfo.getTopic() + new Date());
                     showOnlyOne(subTopicFragment);
+                    onHistoryAdd();
+                    subTopicFragment.updateChatUI();
+                    netConnectFragment.updateDataOnConcStatus();
+
                     View view = getWindow().getDecorView();
                     TextView textView = (TextView) view.findViewById(R.id.sub_topic);
                     textView.setText(qRcodeInfo.getTopic());
                     Toast.makeText(this, getString(R.string.scan_success), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
+                    Log.i(TAG, e.toString());
                     Toast.makeText(this, getString(R.string.scan_fail), Toast.LENGTH_SHORT).show();
                 }
 
 
             }
-        }
-        else if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_CANCELED){
-            Toast.makeText(this,getString(R.string.scan_not_url),Toast.LENGTH_SHORT).show();
+        } else if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_CANCELED) {
+            Toast.makeText(this, getString(R.string.scan_not_url), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -248,19 +262,13 @@ public class EasyConnectActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.nav_index) {
             setTitle(R.string.app_name);
-            if (getSupportFragmentManager().findFragmentByTag("Index") == null)
-                getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, easyConnectFragment, "Index").commit();
             showOnlyOne(easyConnectFragment);
         } else if (id == R.id.nav_new_connect) {
             setTitle(R.string.new_connection);
-            if (getSupportFragmentManager().findFragmentByTag("Connect") == null)
-                getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, netConnectFragment, "Connect").commit();
             showOnlyOne(netConnectFragment);
         } else if (id == R.id.nav_pub_msg) {
             if (connection.getConnectionStatus() == Connection.ConnectionStatus.CONNECTED) {
                 setTitle(R.string.publish_title);
-                if (getSupportFragmentManager().findFragmentByTag("Pub") == null)
-                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, pubMessageFragment, "Pub").commit();
                 showOnlyOne(pubMessageFragment);
             } else {
                 new AlertDialog.Builder(this)
@@ -270,8 +278,6 @@ public class EasyConnectActivity extends AppCompatActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 setTitle(R.string.new_connection);
-                                if (getSupportFragmentManager().findFragmentByTag("Connect") == null)
-                                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, netConnectFragment, "Connect").commit();
                                 showOnlyOne(netConnectFragment);
 
                             }
@@ -283,8 +289,6 @@ public class EasyConnectActivity extends AppCompatActivity
         } else if (id == R.id.nav_sub_msg) {
             if (connection.getConnectionStatus() == Connection.ConnectionStatus.CONNECTED) {
                 setTitle(R.string.subscribe_title);
-                if (getSupportFragmentManager().findFragmentByTag("Sub") == null)
-                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, subTopicFragment, "Sub").commit();
                 showOnlyOne(subTopicFragment);
             } else {
 
@@ -295,8 +299,6 @@ public class EasyConnectActivity extends AppCompatActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 setTitle(R.string.new_connection);
-                                if (getSupportFragmentManager().findFragmentByTag("Connect") == null)
-                                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, netConnectFragment, "Connect").commit();
                                 showOnlyOne(netConnectFragment);
                             }
                         })
@@ -318,8 +320,6 @@ public class EasyConnectActivity extends AppCompatActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 setTitle(R.string.new_connection);
-                                if (getSupportFragmentManager().findFragmentByTag("Connect") == null)
-                                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, netConnectFragment, "Connect").commit();
                                 showOnlyOne(netConnectFragment);
 
                             }
@@ -334,8 +334,6 @@ public class EasyConnectActivity extends AppCompatActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 setTitle(R.string.publish_title);
-                                if (getSupportFragmentManager().findFragmentByTag("Pub") == null)
-                                    getSupportFragmentManager().beginTransaction().add(R.id.app_bar_easy_connect, pubMessageFragment, "Pub").commit();
                                 showOnlyOne(pubMessageFragment);
 
                             }

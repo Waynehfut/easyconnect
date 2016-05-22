@@ -6,7 +6,17 @@ package com.waynehfut.Lz77;
  * Mail:waynehfut@gmail.com
  */
 public class MsgLzHelper {
-    static public String compressLZ77(String buffer) {
+    static private int getIntLenght(int num) {
+        if (num < 10)
+            return 1;
+        if (num < 100)
+            return 2;
+        if (num < 1000)
+            return 3;
+        return 0;
+    }
+
+    public String compressLZ77(String buffer) {
         int current, pointer, lenght;
         char newChar;
         String tags, dictionary, strToCompress;
@@ -83,8 +93,7 @@ public class MsgLzHelper {
         return tags;
     }
 
-
-    static public String DecompressLZ77(String tags) {
+    public String DecompressLZ77(String tags) {
         String buffer = "";
         char newChar;
         int pointer = 0, lenght = 0, pointerLen = 0, lenghtLen = 0;
@@ -128,15 +137,5 @@ public class MsgLzHelper {
 
         }
         return buffer;
-    }
-
-    static private int getIntLenght(int num) {
-        if (num < 10)
-            return 1;
-        if (num < 100)
-            return 2;
-        if (num < 1000)
-            return 3;
-        return 0;
     }
 }

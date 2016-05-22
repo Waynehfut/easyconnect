@@ -42,7 +42,8 @@ public class MQTTConnectFragment extends Fragment {
     private EasyConnectFragment easyConnectFragment;
     private HistoryAddCallback historyAddCallback;
     private TextView connectText;
-
+    private FloatingActionButton fab;
+    private FloatingActionButton disFab;
 
     public MQTTConnectFragment() {
 
@@ -90,8 +91,8 @@ public class MQTTConnectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (connectStatus == Connection.ConnectionStatus.DISCONNECTED) {
             View view = inflater.inflate(R.layout.new_connect, container, false);
-            final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.verifyYesButton);
-            final FloatingActionButton disFab = (FloatingActionButton) view.findViewById(R.id.disConnectBtn);
+            fab = (FloatingActionButton) view.findViewById(R.id.verifyYesButton);
+            disFab = (FloatingActionButton) view.findViewById(R.id.disConnectBtn);
             mServerId = (EditText) view.findViewById(R.id.connect_server);
             mPort = (EditText) view.findViewById(R.id.connect_port);
             mClientId = (EditText) view.findViewById(R.id.clientId);
@@ -114,20 +115,8 @@ public class MQTTConnectFragment extends Fragment {
                     }
                 }
             });
-            if (connection.getConnectionStatus() == Connection.ConnectionStatus.CONNECTED) {
-                fab.hide();
-                disFab.show();
-                mServerId.setText(connection.getServerId());
-                mPort.setText(connection.getPort());
-                mClientId.setText(connection.getClientId());
-                mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_connect));
-                connectText.setText(getString(R.string.connect));
 
-            }
-            if (connection.getConnectionStatus() == Connection.ConnectionStatus.DISCONNECTED) {
-                mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_disconnect));
-                connectText.setText(getString(R.string.disconnected));
-            }
+            updateDataOnConcStatus();
 
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -233,6 +222,23 @@ public class MQTTConnectFragment extends Fragment {
             * */
             View view = inflater.inflate(R.layout.new_connect, container, false);
             return view;
+        }
+    }
+
+    public void updateDataOnConcStatus() {
+        if (connection.getConnectionStatus() == Connection.ConnectionStatus.CONNECTED) {
+            fab.hide();
+            disFab.show();
+            mServerId.setText(connection.getServerId());
+            mPort.setText(connection.getPort());
+            mClientId.setText(connection.getClientId());
+            mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_connect));
+            connectText.setText(getString(R.string.connect));
+
+        }
+        if (connection.getConnectionStatus() == Connection.ConnectionStatus.DISCONNECTED) {
+            mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_disconnect));
+            connectText.setText(getString(R.string.disconnected));
         }
     }
 

@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.zxing.WriterException;
+import com.waynehfut.Lz77.MsgLzHelper;
 import com.waynehfut.qrcode.QRCodeGenerator;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -43,6 +43,9 @@ public class MQTTPubFragment extends Fragment {
     private QRCodeGenerator qrCodeGenerator = QRCodeGenerator.newInstance();
     private int mQOS = 0;
     private Connection connection = Connection.getConnection();
+    private MsgLzHelper msgLzHelper = new MsgLzHelper();
+    private String compressTopic;
+    private String compressContext;
 
     public static MQTTPubFragment newInstance() {
         if (smqttPubFragment == null)
@@ -97,7 +100,9 @@ public class MQTTPubFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
-                    connection.publishMessage(mTopicId.getText().toString(), mMessage.getText().toString(), mQOS);
+                    compressTopic = msgLzHelper.compressLZ77(mTopicId.getText().toString());
+                    compressContext = msgLzHelper.compressLZ77(mMessage.getText().toString());
+                    connection.publishMessage(compressTopic,compressContext, mQOS);
                     connection.setmTopic(mTopicId.getText().toString());
                     connection.setPubContext(mMessage.getText().toString());
                     Toast.makeText(getContext(), getString(R.string.toast_pub_success), Toast.LENGTH_SHORT).show();

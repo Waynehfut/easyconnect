@@ -177,7 +177,7 @@ public class Connection {
         newMessage.setQos(qos);
         if (mqttClient != null) {
             mqttClient.publish(topic, newMessage);
-            mPubTopic = topic;
+            mTopic = topic;
         } else {
             throw new MqttPersistenceException(200);
         }
@@ -187,7 +187,7 @@ public class Connection {
     public void subMessage(String topic) throws Exception {
         if (mqttClient != null) {
             mqttClient.subscribe(topic);
-            mSubTopic = topic;
+            mTopic = topic;
         } else {
             throw new MqttException(100);
         }
