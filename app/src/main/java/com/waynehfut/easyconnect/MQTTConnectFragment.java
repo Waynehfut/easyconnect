@@ -1,7 +1,9 @@
 package com.waynehfut.easyconnect;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import java.util.UUID;
+
 /**
  * Created by Wayne on 2016/5/8.
  * Site:www.waynehfut.com
@@ -37,7 +41,7 @@ public class MQTTConnectFragment extends Fragment {
     private TextView mConnStatus;
     private MqttClient mqttClient;
     private Connection.ConnectionStatus connectStatus = Connection.ConnectionStatus.DISCONNECTED;
-    private EasyHistory easyConnectHistory = new EasyHistory();
+    private EasyHistory easyConnectHistory = new EasyHistory(UUID.randomUUID());
     private EasyHistoryLab easyHistoryLab;
     private EasyConnectFragment easyConnectFragment;
     private HistoryAddCallback historyAddCallback;
@@ -45,10 +49,10 @@ public class MQTTConnectFragment extends Fragment {
     private FloatingActionButton fab;
     private FloatingActionButton disFab;
     private ServerHistory serverHistory;
-    
+    private Context mContext;
 
     public MQTTConnectFragment() {
-
+        mContext = getContext();
     }
 
     public static MQTTConnectFragment newInstance() {
@@ -126,7 +130,7 @@ public class MQTTConnectFragment extends Fragment {
 
                         brokerURL = "tcp://" + mServerId.getText().toString() + ":" + mPort.getText().toString();
                         connection.connectServer(brokerURL, mClientId.getText().toString());
-                        updateHistorydateAndUI(getString(R.string.new_connection), " ", Connection.ConnectionStatus.NEWCONNECT, new EasyHistory());
+                        updateHistorydateAndUI(getString(R.string.new_connection), " ", Connection.ConnectionStatus.NEWCONNECT, new EasyHistory(UUID.randomUUID()));
                         Snackbar.make(view, getString(R.string.con_success) + mServerId.getText().toString() + getString(R.string.to_string) + mClientId.getText().toString(), Snackbar.LENGTH_SHORT)
                                 .setAction("Action", null).show();
 
@@ -139,10 +143,15 @@ public class MQTTConnectFragment extends Fragment {
                         connectText.setText(getString(R.string.connect));
                         fab.hide();
                         disFab.show();
-                        updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), getString(R.string.to_string) + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyHistory());
+                        updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), getString(R.string.to_string) + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyHistory(UUID.randomUUID()));
+
+                        ServerHistory serverHistory = new ServerHistory(UUID.randomUUID());
+                        serverHistory.setmServer(mServerId.getText().toString());
+                        serverHistory.setmPort(mPort.getText().toString());
+                        ServerHistoryLab.get(getActivity()).addServer(serverHistory);
 
                     } catch (Exception e) {
-                        updateHistorydateAndUI(getString(R.string.failure_connect), e.toString().substring(0, 32), Connection.ConnectionStatus.DISCONNECTED, new EasyHistory());
+                        updateHistorydateAndUI(getString(R.string.failure_connect), e.toString().substring(0, 32), Connection.ConnectionStatus.DISCONNECTED, new EasyHistory(UUID.randomUUID()));
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
 
                         Snackbar.make(view, getString(R.string.conn_fail) + e.toString(), Snackbar.LENGTH_SHORT)
@@ -169,7 +178,7 @@ public class MQTTConnectFragment extends Fragment {
                                     try {
                                         connection.disConnectServer();
                                         mConnStatus.setBackground(getResources().getDrawable(R.drawable.ic_disconnect));
-                                        updateHistorydateAndUI(getString(R.string.disconnected), " ", Connection.ConnectionStatus.DISCONNECTED, new EasyHistory());
+                                        updateHistorydateAndUI(getString(R.string.disconnected), " ", Connection.ConnectionStatus.DISCONNECTED, new EasyHistory(UUID.randomUUID()));
                                         connectText.setText(getString(R.string.disconnected));
                                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
                                     } catch (MqttException e) {

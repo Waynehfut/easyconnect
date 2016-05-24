@@ -1,9 +1,9 @@
 package com.waynehfut.easyconnect;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * Created by Wayne on 2016/5/14.
@@ -14,6 +14,7 @@ public class ChatHistoryLab {
     private static ChatHistoryLab sChatHistoryLab;
     private ArrayList<ChatHistory> mChathistories;
     private Context mContext;
+    private SQLiteDatabase mDatabse;
 
     private ChatHistoryLab(Context appContext) {
         mContext = appContext;

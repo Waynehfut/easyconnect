@@ -27,8 +27,8 @@ public class EasyHistory {
     private Connection.ConnectionStatus hisType;
     private UUID historyUID;
 
-    public EasyHistory() {
-        historyUID = UUID.randomUUID();
+    public EasyHistory(UUID uuid) {
+        historyUID = uuid;
     }
     public UUID getHistoryUID(){
         return historyUID;

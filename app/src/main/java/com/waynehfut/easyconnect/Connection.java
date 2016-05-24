@@ -196,7 +196,7 @@ public class Connection {
     /*
     * 链接状态
     * */
-    enum ConnectionStatus {
+   public enum ConnectionStatus {
         /*
         * 客户端已经链接
         * */

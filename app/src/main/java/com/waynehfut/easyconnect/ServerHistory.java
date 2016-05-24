@@ -3,7 +3,7 @@ package com.waynehfut.easyconnect;
 import java.util.UUID;
 
 /**
- * Created by Wayne on 2016/5/24.
+ * Created by Wayne on 2016/5/22.
  * Site:www.waynehfut.com
  * Mail:waynehfut@gmail.com
  */

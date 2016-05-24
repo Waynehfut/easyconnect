@@ -34,6 +34,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class EasyConnectActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MQTTConnectFragment.HistoryAddCallback {
@@ -236,6 +237,11 @@ public class EasyConnectActivity extends AppCompatActivity
                     onHistoryAdd();
                     subTopicFragment.updateChatUI();
                     netConnectFragment.updateDataOnConcStatus();
+
+                    ServerHistory serverHistory = new ServerHistory(UUID.randomUUID());
+                    serverHistory.setmServer(connection.getServerId());
+                    serverHistory.setmPort(connection.getPort());
+                    ServerHistoryLab.get(getApplicationContext()).addServer(serverHistory);
 
                     View view = getWindow().getDecorView();
                     TextView textView = (TextView) view.findViewById(R.id.sub_topic);

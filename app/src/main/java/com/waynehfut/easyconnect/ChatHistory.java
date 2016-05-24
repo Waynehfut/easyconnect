@@ -23,6 +23,12 @@ public class ChatHistory {
     private Date chatDate;
     private String chatType;
 
+    public UUID getChatUid() {
+        return chatUid;
+    }
+
+    private UUID chatUid;
+
     public String getChatType() {
         return chatType;
     }
