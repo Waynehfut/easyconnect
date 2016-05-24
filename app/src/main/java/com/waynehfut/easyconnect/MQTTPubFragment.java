@@ -102,7 +102,8 @@ public class MQTTPubFragment extends Fragment {
                 try {
                     compressTopic = msgLzHelper.compressLZ77(mTopicId.getText().toString());
                     compressContext = msgLzHelper.compressLZ77(mMessage.getText().toString());
-                    connection.publishMessage(compressTopic,compressContext, mQOS);
+                    // TODO: 2016/5/24 Lz77 comress; 
+                    connection.publishMessage(mTopicId.getText().toString(),mMessage.getText().toString(), mQOS);
                     connection.setmTopic(mTopicId.getText().toString());
                     connection.setPubContext(mMessage.getText().toString());
                     Toast.makeText(getContext(), getString(R.string.toast_pub_success), Toast.LENGTH_SHORT).show();

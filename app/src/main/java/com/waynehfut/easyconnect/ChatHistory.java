@@ -1,7 +1,6 @@
 package com.waynehfut.easyconnect;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by Wayne on 2016/5/14.
@@ -23,11 +22,6 @@ public class ChatHistory {
     private Date chatDate;
     private String chatType;
 
-    public UUID getChatUid() {
-        return chatUid;
-    }
-
-    private UUID chatUid;
 
     public String getChatType() {
         return chatType;

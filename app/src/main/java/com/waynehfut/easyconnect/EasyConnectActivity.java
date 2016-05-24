@@ -73,9 +73,10 @@ public class EasyConnectActivity extends AppCompatActivity
             }
 
             @Override
-            public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 depressContext = msgLzHelper.DecompressLZ77(mqttMessage.toString());
-                NewMessageNotification.notify(getApplicationContext(), getString(R.string.messageRecieved, depressContext, s), 1);
+                // TODO: 2016/5/24 lz77 depress 
+                NewMessageNotification.notify(getApplicationContext(), getString(R.string.messageRecieved, mqttMessage.toString(), topic), 1);
                 ChatHistory chatHistory = new ChatHistory();
                 chatHistory.setChatClientId(connection.getmTopic());
                 chatHistory.setChatContext(mqttMessage.toString());

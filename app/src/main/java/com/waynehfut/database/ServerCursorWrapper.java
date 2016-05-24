@@ -51,23 +51,22 @@ public class ServerCursorWrapper extends CursorWrapper {
         String hisType = getString(getColumnIndex(ServerDbSchema.ConnectTable.Cols.HISTYPE));
         String historyUID = getString(getColumnIndex(ServerDbSchema.ConnectTable.Cols.HSITORYUUID));
 
-        EasyHistory easyHistory =new EasyHistory(UUID.randomUUID());
+        EasyHistory easyHistory = new EasyHistory(UUID.randomUUID());
         easyHistory.setHistoryTitle(historyTitle);
         easyHistory.setHistorySubTitle(historySubTitle);
         Connection.ConnectionStatus status = Connection.ConnectionStatus.DISCONNECTED;
-        switch (hisType)
-        {
+        switch (hisType) {
             case "CONNECTED":
                 status = Connection.ConnectionStatus.CONNECTED;
                 break;
             case "DISCONNECTED":
-                status= Connection.ConnectionStatus.DISCONNECTED;
+                status = Connection.ConnectionStatus.DISCONNECTED;
                 break;
             case "NEWCONNECT":
-                status= Connection.ConnectionStatus.NEWCONNECT;
+                status = Connection.ConnectionStatus.NEWCONNECT;
                 break;
             default:
-                status= Connection.ConnectionStatus.DISCONNECTED;
+                status = Connection.ConnectionStatus.DISCONNECTED;
         }
         easyHistory.setHisType(status);
         return easyHistory;
