@@ -44,9 +44,10 @@ public class MQTTConnectFragment extends Fragment {
     private TextView connectText;
     private FloatingActionButton fab;
     private FloatingActionButton disFab;
+    private ServerHistory serverHistory;
+    
 
     public MQTTConnectFragment() {
-
 
     }
 
@@ -139,6 +140,7 @@ public class MQTTConnectFragment extends Fragment {
                         fab.hide();
                         disFab.show();
                         updateHistorydateAndUI(getString(R.string.con_success) + mServerId.getText().toString() + ":" + mPort.getText().toString(), getString(R.string.to_string) + mClientId.getText().toString(), Connection.ConnectionStatus.CONNECTED, new EasyHistory());
+
                     } catch (Exception e) {
                         updateHistorydateAndUI(getString(R.string.failure_connect), e.toString().substring(0, 32), Connection.ConnectionStatus.DISCONNECTED, new EasyHistory());
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);

@@ -6,4 +6,12 @@ package com.waynehfut.database;
  * Mail:waynehfut@gmail.com
  */
 public class ServerDbSchema {
+    public static final class ServerTable{
+        public static final String NAME = "Servers";
+        public static final class Cols{
+            public static final String UUID="uuid";
+            public static final String SERVER = "server";
+            public static final String PORT = "port";
+        }
+    }
 }
