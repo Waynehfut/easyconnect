@@ -161,6 +161,7 @@ public class MQTTSubFragment extends Fragment {
                 mChatHistory = chatHistory;
                 mChatClientId.setText(mChatHistory.getChatClientId());
                 mChatContext.setText(mChatHistory.getChatContext());
+                String datess = mChatHistory.getChatDate().toString();
                 String formatDate = DateFormat.format("yyyy MMMM dd HH:MM:ss EEEE, ", mChatHistory.getChatDate()).toString();
                 mChatDate.setText(formatDate);
                 mChatItemBox.setBackground(getResources().getDrawable(setChatItemBoxByType(mChatHistory.getChatType())));

@@ -29,11 +29,18 @@ import java.util.List;
 * undo the settings
 *
 * */
-public class SettingActivity extends AppCompatPreferenceActivity {
+
+
+public class SettingActivity extends AppCompatPreferenceActivity{
+    public static Uri getSoundUri() {
+        return soundUri;
+    }
+
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
+    private static Uri soundUri;
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -69,6 +76,7 @@ public class SettingActivity extends AppCompatPreferenceActivity {
                         // Set the summary to reflect the new ringtone display
                         // name.
                         String name = ringtone.getTitle(preference.getContext());
+                        NewMessageNotification.setSoundUri(stringValue);
                         preference.setSummary(name);
                     }
                 }

@@ -35,7 +35,7 @@ public class ServerCursorWrapper extends CursorWrapper {
     public ChatHistory getChatHistory() {
         String chatClientId = getString(getColumnIndex(ServerDbSchema.ChatTable.Cols.CHATCLIENTID));
         String chatContext = getString(getColumnIndex(ServerDbSchema.ChatTable.Cols.CHATCONTEXT));
-        long chatDate = getLong(getColumnIndex(ServerDbSchema.ChatTable.Cols.DATE));
+        String chatDate = getString(getColumnIndex(ServerDbSchema.ChatTable.Cols.DATE));
         String chatType = getString(getColumnIndex(ServerDbSchema.ChatTable.Cols.CHATTYPE));
         ChatHistory chatHistory = new ChatHistory();
         chatHistory.setChatClientId(chatClientId);

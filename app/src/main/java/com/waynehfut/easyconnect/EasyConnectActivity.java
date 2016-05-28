@@ -1,5 +1,6 @@
 package com.waynehfut.easyconnect;
 
+import android.app.Notification;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -82,6 +83,11 @@ public class EasyConnectActivity extends AppCompatActivity
         startService(testIntent);
     }
 
+    @Override
+    protected void onRestart() {
+        showOnlyOne(subTopicFragment);
+        super.onRestart();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,6 +301,7 @@ public class EasyConnectActivity extends AppCompatActivity
             }
         } else if (id == R.id.nav_app_setting) {
             Intent intent = new Intent(this, SettingActivity.class);
+            intent.putExtra("Ringtone", Notification.DEFAULT_SOUND);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
             if (connection.getmPubTopic() != null) {

@@ -55,6 +55,7 @@ public class BackGroundServices extends Service {
         chatHistoryLab = ChatHistoryLab.getsChatHistoryLab(getApplicationContext());
         mqttClient = connection.getMqttClient();
         mqttClient.setCallback(new MqttCallback() {
+            int messageNumber = 0;
             @Override
             public void connectionLost(Throwable throwable) {
                 try {
@@ -68,7 +69,7 @@ public class BackGroundServices extends Service {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
 //                depressContext = msgLzHelper.DecompressLZ77(mqttMessage.toString());
                 // TODO: 2016/5/24 lz77 depress
-                NewMessageNotification.notify(getApplicationContext(), getString(R.string.messageRecieved, mqttMessage.toString(), topic), 1);
+                NewMessageNotification.notify(getApplicationContext(), getString(R.string.messageRecieved, mqttMessage.toString(), topic), messageNumber++);
                 ChatHistory chatHistory = new ChatHistory();
                 chatHistory.setChatClientId(connection.getmTopic());
                 chatHistory.setChatContext(mqttMessage.toString());

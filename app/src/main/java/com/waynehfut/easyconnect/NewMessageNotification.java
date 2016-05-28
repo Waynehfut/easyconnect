@@ -12,28 +12,32 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import com.meizu.flyme.reflect.NotificationProxy;
 
 /**
  * Helper class for showing and canceling new message
  * notifications.
- * <p/>
+ * <p>
  * This class makes heavy use of the {@link NotificationCompat.Builder} helper
  * class to create notifications in a backward-compatible way.
  */
 public class NewMessageNotification {
+    public static void setSoundUri(String soundUri) {
+        NewMessageNotification.soundUri = soundUri;
+    }
+
     /**
      * The unique identifier for this type of notification.
      */
+    public static String soundUri = "";
     private static final String NOTIFICATION_TAG = "NewMessage";
 
     /**
      * Shows the notification, or updates a previously shown notification of
      * this type, with the given parameters.
-     * <p/>
+     * <p>
      * TODO: Customize this method's arguments to present relevant content in
      * the notification.
-     * <p/>
+     * <p>
      * TODO: Customize the contents of this method to tweak the behavior and
      * presentation of new message notifications. Make
      * sure to follow the
@@ -54,13 +58,13 @@ public class NewMessageNotification {
         final String ticker = res.getString(R.string.share_topic_string);
         final String title = res.getString(
                 R.string.new_message_notification_title_template);
-        final String text =exampleString;
+        final String text = exampleString;
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.
-                .setDefaults(Notification.FLAG_SHOW_LIGHTS|Notification.DEFAULT_SOUND)
+                .setDefaults(Notification.FLAG_SHOW_LIGHTS | Notification.DEFAULT_SOUND)
 
 
                 // Set required fields, including the small icon, the
@@ -68,7 +72,6 @@ public class NewMessageNotification {
                 .setSmallIcon(R.drawable.ic_connect)
                 .setContentTitle(text)
                 .setContentText(ticker)
-
                 // All fields below this line are optional.
 
                 // Use a default priority (recognized on devices running Android
@@ -104,7 +107,7 @@ public class NewMessageNotification {
                                 * 此处实现了点击通知的事件
                                 * */
                                 0,
-                                new Intent(context,EasyConnectActivity.class),
+                                new Intent(context, EasyConnectActivity.class),
                                 PendingIntent.FLAG_UPDATE_CURRENT))
 
                 // Show expanded text content on devices running Android 4.1 or
@@ -127,12 +130,13 @@ public class NewMessageNotification {
                                 0,
                                 Intent.createChooser(new Intent(Intent.ACTION_SEND)
                                         .setType("text/plain")
-                                        .putExtra(Intent.EXTRA_TEXT, ticker+"  "+res.getString(R.string.share_info_context)), title),
+                                        .putExtra(Intent.EXTRA_TEXT, ticker + "  " + res.getString(R.string.share_info_context)), title),
                                 PendingIntent.FLAG_UPDATE_CURRENT))
 
 
                 // Automatically dismiss the notification when it is touched.
                 .setAutoCancel(true);
+        builder.build().sound=Uri.parse(soundUri);
         notify(context, builder.build());
     }
 
@@ -161,4 +165,5 @@ public class NewMessageNotification {
             nm.cancel(NOTIFICATION_TAG.hashCode());
         }
     }
+
 }
