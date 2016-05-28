@@ -8,9 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -46,6 +48,8 @@ public class MQTTPubFragment extends Fragment {
     private MsgLzHelper msgLzHelper = new MsgLzHelper();
     private String compressTopic;
     private String compressContext;
+    private CheckBox isRetainedCheck;
+    private boolean isRetained;
 
     public static MQTTPubFragment newInstance() {
         if (smqttPubFragment == null)
@@ -77,6 +81,7 @@ public class MQTTPubFragment extends Fragment {
         mMessage = (EditText) view.findViewById(R.id.pub_context);
         mQOSRadioGroup = (RadioGroup) view.findViewById(R.id.qosRadio);
         qrCodeTextView = (TextView) view.findViewById(R.id.qr_code_view);
+        isRetainedCheck = (CheckBox) view.findViewById(R.id.isRetained);
         smqttSubFragment = MQTTSubFragment.newInstance();
         mQOSRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -102,8 +107,13 @@ public class MQTTPubFragment extends Fragment {
                 try {
                     compressTopic = msgLzHelper.compressLZ77(mTopicId.getText().toString());
                     compressContext = msgLzHelper.compressLZ77(mMessage.getText().toString());
-                    // TODO: 2016/5/24 Lz77 comress; 
-                    connection.publishMessage(mTopicId.getText().toString(),mMessage.getText().toString(), mQOS);
+                    // TODO: 2016/5/24 Lz77 comress;
+                    if (isRetainedCheck.isChecked()) {
+                        isRetained = true;
+                    } else {
+                        isRetained = false;
+                    }
+                    connection.publishMessage(mTopicId.getText().toString(), mMessage.getText().toString(), mQOS,isRetained);
                     connection.setmTopic(mTopicId.getText().toString());
                     connection.setPubContext(mMessage.getText().toString());
                     Toast.makeText(getContext(), getString(R.string.toast_pub_success), Toast.LENGTH_SHORT).show();

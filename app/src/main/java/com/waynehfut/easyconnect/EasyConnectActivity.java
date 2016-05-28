@@ -1,9 +1,13 @@
 package com.waynehfut.easyconnect;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -26,18 +30,16 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.waynehfut.Lz77.MsgLzHelper;
+import com.waynehfut.services.BackGroundServices;
 import com.waynehfut.zxing.android.CaptureActivity;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.Date;
 import java.util.UUID;
 
 public class EasyConnectActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MQTTConnectFragment.HistoryAddCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, MQTTConnectFragment.HistoryAddCallback{
     private static final String TAG = "EasyConnectActivity";
     private static final int REQUEST_CODE_SCAN = 0x0000;
     private static final String DECODED_CONTENT_KEY = "codedContent";
@@ -55,48 +57,29 @@ public class EasyConnectActivity extends AppCompatActivity
     private MsgLzHelper msgLzHelper = new MsgLzHelper();
     private String depressTopic;
     private String depressContext;
+    private BackGroundServices backGroundServices;
+    private BackGroundServices.MessageBinder messageBinder;
 
+
+    private ServiceConnection messageNotification = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            messageBinder=(BackGroundServices.MessageBinder)service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
 
     @Override
     public void onHistoryAdd() {
+        Intent testIntent = new Intent(this, BackGroundServices.class);
         easyConnectFragment.updateUI();
-        mqttClient = connection.getMqttClient();
-        mqttClient.setCallback(new MqttCallback() {
-            @Override
-            public void connectionLost(Throwable throwable) {
-                try {
-                    mqttClient.connect();
-                } catch (Exception p) {
-                    p.printStackTrace();
-                }
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                depressContext = msgLzHelper.DecompressLZ77(mqttMessage.toString());
-                // TODO: 2016/5/24 lz77 depress 
-                NewMessageNotification.notify(getApplicationContext(), getString(R.string.messageRecieved, mqttMessage.toString(), topic), 1);
-                ChatHistory chatHistory = new ChatHistory();
-                chatHistory.setChatClientId(connection.getmTopic());
-                chatHistory.setChatContext(mqttMessage.toString());
-                chatHistory.setChatDate(new Date());
-                chatHistory.setChatType("Income");
-                chatHistoryLab.addChatHistory(chatHistory);
-                subTopicFragment.updateChatUI();
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-                ChatHistory chatHistory = new ChatHistory();
-                chatHistory.setChatClientId(connection.getmTopic());
-                chatHistory.setChatContext(connection.getPubContext());
-                chatHistory.setChatDate(new Date());
-                chatHistory.setChatType("Outcome");
-                chatHistoryLab.addChatHistory(chatHistory);
-                subTopicFragment.updateChatUI();
-            }
-        });
+        bindService(testIntent, messageNotification, Context.BIND_AUTO_CREATE);
+        startService(testIntent);
     }
 
 
@@ -111,8 +94,6 @@ public class EasyConnectActivity extends AppCompatActivity
         setContentView(R.layout.activity_easy_connect);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.app_bar_easy_connect);
 
@@ -222,12 +203,10 @@ public class EasyConnectActivity extends AppCompatActivity
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
             if (data != null) {
                 String content = data.getStringExtra(DECODED_CONTENT_KEY);
-                // TODO: 2016/5/16  to realize qrcode action after scan
                 Gson gson = new Gson();
                 QRcodeInfo qRcodeInfo = new QRcodeInfo();
                 qRcodeInfo = gson.fromJson(content, QRcodeInfo.class);
                 try {
-                    // TODO: 2016/5/16 update function after scan qr code
                     connection.connectServer(qRcodeInfo.getUrl(), qRcodeInfo.getTopic() + new Date());
                     connection.setmTopic(qRcodeInfo.getTopic());
                     connection.setServerId(qRcodeInfo.getUrl().substring(6, qRcodeInfo.getUrl().length() - 5));
@@ -296,6 +275,7 @@ public class EasyConnectActivity extends AppCompatActivity
         } else if (id == R.id.nav_sub_msg) {
             if (connection.getConnectionStatus() == Connection.ConnectionStatus.CONNECTED) {
                 setTitle(R.string.subscribe_title);
+                subTopicFragment.updateChatUI();
                 showOnlyOne(subTopicFragment);
             } else {
 
@@ -393,3 +373,4 @@ public class EasyConnectActivity extends AppCompatActivity
         return true;
     }
 }
+

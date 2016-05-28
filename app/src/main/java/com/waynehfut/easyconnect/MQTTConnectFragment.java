@@ -151,7 +151,7 @@ public class MQTTConnectFragment extends Fragment {
                         ServerHistoryLab.get(getActivity()).addServer(serverHistory);
 
                     } catch (Exception e) {
-                        updateHistorydateAndUI(getString(R.string.failure_connect), e.toString().substring(0, 32), Connection.ConnectionStatus.DISCONNECTED, new EasyHistory(UUID.randomUUID()));
+                        updateHistorydateAndUI(getString(R.string.failure_connect), e.toString().substring(0, 20), Connection.ConnectionStatus.DISCONNECTED, new EasyHistory(UUID.randomUUID()));
                         connection.setConnectionStatus(Connection.ConnectionStatus.DISCONNECTED);
 
                         Snackbar.make(view, getString(R.string.conn_fail) + e.toString(), Snackbar.LENGTH_SHORT)

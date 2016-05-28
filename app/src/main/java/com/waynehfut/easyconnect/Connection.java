@@ -162,6 +162,8 @@ public class Connection {
     public void connectServer(final String brokerURL, final String clientId) throws MqttException {
         mqttClient = new MqttClient(brokerURL, clientId, new MemoryPersistence());
         mqttConnectOptions = new MqttConnectOptions();
+        mqttConnectOptions.setKeepAliveInterval(0);
+        mqttClient.setTimeToWait(5000);
         mqttClient.connect(mqttConnectOptions);
 
     }
@@ -172,11 +174,10 @@ public class Connection {
 
     }
 
-    public void publishMessage(String topic, String content, int qos) throws MqttException {
-        MqttMessage newMessage = new MqttMessage(content.getBytes());
-        newMessage.setQos(qos);
+    public void publishMessage(String topic, String content, int qos,boolean isRetained) throws MqttException {
+        byte[] payload = content.getBytes();
         if (mqttClient != null) {
-            mqttClient.publish(topic, newMessage);
+            mqttClient.publish(topic, payload,qos,isRetained);
             mTopic = topic;
         } else {
             throw new MqttPersistenceException(200);

@@ -104,7 +104,7 @@ public class NewMessageNotification {
                                 * 此处实现了点击通知的事件
                                 * */
                                 0,
-                                new Intent(Intent.ACTION_VIEW, Uri.parse("http://mqtt.waynehfut.com")),
+                                new Intent(context,EasyConnectActivity.class),
                                 PendingIntent.FLAG_UPDATE_CURRENT))
 
                 // Show expanded text content on devices running Android 4.1 or

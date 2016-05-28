@@ -30,7 +30,8 @@
         <activity
             android:name="com.waynehfut.zxing.android.CaptureActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".SettingActivity"
             android:label="@string/title_activity_setting"
@@ -51,6 +52,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.waynehfut.easyconnect.EasyConnectActivity" />
         </activity>
+        <service android:name="com.waynehfut.services.BackGroundServices"/>
     </application>
 
 </manifest>

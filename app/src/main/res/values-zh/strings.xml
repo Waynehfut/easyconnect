@@ -59,7 +59,7 @@
     <string name="qos">服务质量等级</string>
     <string name="qos1">中</string>
     <string name="qos2">高</string>
-    <string name="retained">新消息提醒</string>
+    <string name="retained">Retain信息</string>
     <string name="save">保存</string>
     <string name="select">选择</string>
     <string name="server">服务器</string>
