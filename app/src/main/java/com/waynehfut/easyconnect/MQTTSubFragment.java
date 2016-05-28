@@ -6,8 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +40,7 @@ public class MQTTSubFragment extends Fragment {
     private ChatHistoryLab chatHistoryLab;
     private ChatHistoryAdapter chatHistoryAdapter;
     private ChatHistory chatHistory;
+    private CardView floatSendCard;
 
 
     public static MQTTSubFragment newInstance() {
@@ -65,11 +69,14 @@ public class MQTTSubFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.new_sub, container, false);
         mTopicId = (EditText) view.findViewById(R.id.sub_topic);
+
+
         chatHistoryLab = ChatHistoryLab.getsChatHistoryLab(getContext());
         mChatRecycleView = (RecyclerView) view.findViewById(R.id.recycle_view);
         mChatRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.verifyYesButton);
-
+        floatSendCard = (CardView)view.findViewById(R.id.float_send_message);
+        floatSendCard.setVisibility(View.INVISIBLE);
+        final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.verifyYesButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,10 +84,29 @@ public class MQTTSubFragment extends Fragment {
                     connection.subMessage(mTopicId.getText().toString());
                     connection.setmTopic(mTopicId.getText().toString());
                     Toast.makeText(getContext(), getString(R.string.toast_sub_success, mTopicId.getText().toString()), Toast.LENGTH_SHORT).show();
+                    floatSendCard.setVisibility(View.VISIBLE);
+                    fab.hide();
                 } catch (Exception e) {
                     Snackbar.make(view, getString(R.string.toast_sub_failed, mTopicId.getText().toString()) + e.toString(), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
+            }
+        });
+        mTopicId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                fab.show();
+                floatSendCard.setVisibility(View.INVISIBLE);
             }
         });
         return view;

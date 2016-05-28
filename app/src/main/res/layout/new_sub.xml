@@ -69,8 +69,8 @@
         android:id="@+id/recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="140dp"
-
+        android:layout_marginTop="120dp"
+        android:background="@color/colorChatback"
         android:layout_weight="1" />
 
 
@@ -81,5 +81,15 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/done_white" />
+    <include
+        layout="@layout/float_send_message"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        />
+
 
 </android.support.design.widget.CoordinatorLayout>

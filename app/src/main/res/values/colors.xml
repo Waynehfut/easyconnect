@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#138594</color>
     <color name="colorPrimaryDark">#138594</color>
+    <color name="colorChatback">#edb4ccb8</color>
     <color name="colorAccent">#FF4081</color>
     <color name="grey">#c4c2c2</color>
     <color name="contents_text">#ff000000</color>
