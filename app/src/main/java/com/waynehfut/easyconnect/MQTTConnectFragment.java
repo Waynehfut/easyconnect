@@ -257,8 +257,8 @@ public class MQTTConnectFragment extends Fragment {
         easyConnectHistory.setHistoryTitle(historyTitle);
         easyConnectHistory.setHistorySubTitle(historySubTitle);
         easyConnectHistory.setHisType(newconnect);
-        historyAddCallback.onHistoryAdd();
         easyHistoryLab.addHistory(easyConnectHistory);
+        historyAddCallback.onHistoryAdd();
     }
 
     public interface HistoryAddCallback {
