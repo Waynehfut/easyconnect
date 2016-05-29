@@ -15,6 +15,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,6 +42,12 @@ public class MQTTSubFragment extends Fragment {
     private ChatHistoryAdapter chatHistoryAdapter;
     private ChatHistory chatHistory;
     private CardView floatSendCard;
+    /*
+    * on sub page send msg float;
+    * */
+    private Button sendBtn;
+    private EditText textOnSub;
+    private Button extendMsgBtn;
 
 
     public static MQTTSubFragment newInstance() {
@@ -69,13 +76,38 @@ public class MQTTSubFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.new_sub, container, false);
         mTopicId = (EditText) view.findViewById(R.id.sub_topic);
-
-
         chatHistoryLab = ChatHistoryLab.getsChatHistoryLab(getContext());
         mChatRecycleView = (RecyclerView) view.findViewById(R.id.recycle_view);
         mChatRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
         floatSendCard = (CardView)view.findViewById(R.id.float_send_message);
         floatSendCard.setVisibility(View.INVISIBLE);
+
+        sendBtn=(Button)view.findViewById(R.id.send_msg);
+        textOnSub=(EditText)view.findViewById(R.id.onfloat_send_msg);
+        extendMsgBtn=(Button)view.findViewById(R.id.send_extend);
+        extendMsgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: 2016/5/29 extend msg
+                Toast.makeText(getContext(),"Extend click",Toast.LENGTH_SHORT).show();
+            }
+        });
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    connection.publishMessage(mTopicId.getText().toString(),textOnSub.getText().toString(),2,false);
+                    connection.setmTopic(mTopicId.getText().toString());
+                    Toast.makeText(getContext(), getString(R.string.toast_sub_success, mTopicId.getText().toString()), Toast.LENGTH_SHORT).show();
+                } catch (Exception e){
+                    Snackbar.make(view, getString(R.string.toast_sub_failed, mTopicId.getText().toString()) + e.toString(), Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
+                }
+            }
+        });
+
         final FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.verifyYesButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
