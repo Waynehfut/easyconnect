@@ -177,6 +177,7 @@ public class Connection {
     public void publishMessage(String topic, String content, int qos,boolean isRetained) throws MqttException {
         byte[] payload = content.getBytes();
         if (mqttClient != null) {
+            mqttClient.subscribe(topic);
             mqttClient.publish(topic, payload,qos,isRetained);
             mTopic = topic;
         } else {

@@ -15,6 +15,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -42,6 +43,7 @@ public class MQTTSubFragment extends Fragment {
     private ChatHistoryAdapter chatHistoryAdapter;
     private ChatHistory chatHistory;
     private CardView floatSendCard;
+    private CardView chatHistoryHolderCard;
     /*
     * on sub page send msg float;
     * */
@@ -75,33 +77,42 @@ public class MQTTSubFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.new_sub, container, false);
+        /*
+        * Animation
+        * */
+        final ScaleAnimation scaleAnim4 = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f);
+        scaleAnim4.setDuration(500);
+        scaleAnim4.setStartOffset(100);
+        scaleAnim4.setFillAfter(true);
+
         mTopicId = (EditText) view.findViewById(R.id.sub_topic);
         chatHistoryLab = ChatHistoryLab.getsChatHistoryLab(getContext());
         mChatRecycleView = (RecyclerView) view.findViewById(R.id.recycle_view);
         mChatRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        chatHistoryHolderCard = (CardView) view.findViewById(R.id.chat_history_holder);
 
-
-        floatSendCard = (CardView)view.findViewById(R.id.float_send_message);
+        floatSendCard = (CardView) view.findViewById(R.id.float_send_message);
         floatSendCard.setVisibility(View.INVISIBLE);
 
-        sendBtn=(Button)view.findViewById(R.id.send_msg);
-        textOnSub=(EditText)view.findViewById(R.id.onfloat_send_msg);
-        extendMsgBtn=(Button)view.findViewById(R.id.send_extend);
+        sendBtn = (Button) view.findViewById(R.id.send_msg);
+        textOnSub = (EditText) view.findViewById(R.id.onfloat_send_msg);
+        extendMsgBtn = (Button) view.findViewById(R.id.send_extend);
         extendMsgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO: 2016/5/29 extend msg
-                Toast.makeText(getContext(),"Extend click",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Extend click", Toast.LENGTH_SHORT).show();
             }
         });
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    connection.publishMessage(mTopicId.getText().toString(),textOnSub.getText().toString(),2,false);
+                    connection.publishMessage(mTopicId.getText().toString(), textOnSub.getText().toString(), 2, false);
                     connection.setmTopic(mTopicId.getText().toString());
-                    Toast.makeText(getContext(), getString(R.string.toast_sub_success, mTopicId.getText().toString()), Toast.LENGTH_SHORT).show();
-                } catch (Exception e){
+                    connection.setPubContext(textOnSub.getText().toString());
+                    Toast.makeText(getContext(), getString(R.string.toast_pub_success), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
                     Snackbar.make(view, getString(R.string.toast_sub_failed, mTopicId.getText().toString()) + e.toString(), Snackbar.LENGTH_SHORT)
                             .setAction("Action", null).show();
                 }
@@ -117,6 +128,7 @@ public class MQTTSubFragment extends Fragment {
                     connection.setmTopic(mTopicId.getText().toString());
                     Toast.makeText(getContext(), getString(R.string.toast_sub_success, mTopicId.getText().toString()), Toast.LENGTH_SHORT).show();
                     floatSendCard.setVisibility(View.VISIBLE);
+                    floatSendCard.setAnimation(scaleAnim4);
                     fab.hide();
                 } catch (Exception e) {
                     Snackbar.make(view, getString(R.string.toast_sub_failed, mTopicId.getText().toString()) + e.toString(), Snackbar.LENGTH_SHORT)
@@ -137,8 +149,8 @@ public class MQTTSubFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                fab.show();
                 floatSendCard.setVisibility(View.INVISIBLE);
+                fab.show();
             }
         });
         return view;
